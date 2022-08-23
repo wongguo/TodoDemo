@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">TodoDemo</string>
+
+    <!--登录注册界面-->
+    <string name="welcome">Welcome</string>
+    <string name="welcome_register">欢迎注册账号</string>
+    <string name="input_account">请输入账号</string>
+    <string name="input_password">请输入密码</string>
+    <string name="input_rePassword">请再次输入密码</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="login_to_register">没有账号?点击注册</string>
+
+    <!--todo界面-->
+    <string name="toolbar">Todo</string>
+
+    <!--添加待办-->
+    <string name="tb_add">添加待办</string>
+    <string name="add">添加</string>
+    <string name="title">待办事项</string>
+    <string name="content">详情(非必填)</string>
+    <string name="time">选择完成时间</string>
+    
+</resources>
