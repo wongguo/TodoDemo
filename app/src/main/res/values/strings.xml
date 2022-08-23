@@ -27,4 +27,14 @@
     <string name="tb_result">搜索结果</string>
 
 
+    <!--todo界面-->
+    <string name="toolbar">Todo</string>
+
+    <!--添加待办-->
+    <string name="tb_add">添加待办</string>
+    <string name="add">添加</string>
+    <string name="title">待办事项</string>
+    <string name="content">详情(非必填)</string>
+    <string name="time">选择完成时间</string>
+    
 </resources>
