@@ -74,16 +74,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/registerToLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/register_to_login"
-        app:layout_constraintBottom_toTopOf="@+id/mb_register"
-        app:layout_constraintEnd_toEndOf="@+id/til_repassword"
-        app:layout_constraintTop_toBottomOf="@+id/til_repassword" />
-
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_register"
         android:layout_width="match_parent"
@@ -101,7 +91,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_repassword"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.15" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
