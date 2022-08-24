@@ -21,5 +21,10 @@
     <string name="title">待办事项</string>
     <string name="content">详情(非必填)</string>
     <string name="time">选择完成时间</string>
-    
+
+    <!--搜索-->
+    <string name="tb_search">搜索</string>
+    <string name="tb_result">搜索结果</string>
+
+
 </resources>
