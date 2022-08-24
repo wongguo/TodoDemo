@@ -7,10 +7,11 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/materialToolbar"
+        android:id="@+id/mtb_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/main_color"
+        app:navigationIcon="@drawable/ic_baseline_arrow_back_ios_24"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
@@ -20,7 +21,7 @@
         android:layout_height="0dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialToolbar"
+        app:layout_constraintTop_toBottomOf="@+id/mtb_account"
         app:navGraph="@navigation/account_nav"
         tools:layout_editor_absoluteX="1dp" />
 
