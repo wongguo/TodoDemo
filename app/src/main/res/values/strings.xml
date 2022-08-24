@@ -10,6 +10,7 @@
     <string name="login">登录</string>
     <string name="register">注册</string>
     <string name="login_to_register">没有账号?点击注册</string>
+    <string name="register_to_login">已有账号?点击登录</string>
 
     <!--todo界面-->
     <string name="toolbar">Todo</string>

@@ -1,17 +1,14 @@
 package com.example.tododemo;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.example.tododemo.account.AccountActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private MaterialToolbar mtb_main;
     private MaterialButton mb_search;
@@ -20,17 +17,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    }
 
-        init();
-
-        initListener();
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_main;
     }
 
     /**
      * 初始化控件
      */
-    private void init(){
+    @Override
+    protected void initView() {
         mtb_main = findViewById(R.id.mtb_main);
         mb_search = findViewById(R.id.mb_search);
         fab_add = findViewById(R.id.fab_add);
@@ -39,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 控件点击事件
      */
-    private void initListener() {
+    @Override
+    protected void initListener() {
         //用户登录界面跳转
         mtb_main.setNavigationOnClickListener(view -> {
             //如果未登录
@@ -59,4 +58,5 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+
 }
