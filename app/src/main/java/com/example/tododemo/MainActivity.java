@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.tododemo.Bean.UserBean;
+import com.example.tododemo.SQLite.CRUD;
 import com.example.tododemo.SQLite.Constant;
 import com.example.tododemo.SQLite.UserDatabase;
 import com.example.tododemo.account.AccountActivity;
@@ -46,7 +48,18 @@ public class MainActivity extends BaseActivity {
 
     //初始化数据库->自动登录
     protected void initSQL(){
-        UserDatabase userDatabase=new UserDatabase(MainActivity.this);
+        for (UserBean userBean : new CRUD(MainActivity.this,Constant.ACCOUNT_TABLE_NAME).RetrieveUser()) {
+            if(userBean.getIsLogin().equals("true")){
+                Constant.username= userBean.getUsername();
+                // 给常量赋值，该常量可作为在未退出程序时是否登陆的一个判断值
+                Constant.isLogin = true;
+                // 给控件设置登陆用户文本
+                efab_account.setText(userBean.getUsername());
+                break;
+            }
+        }
+
+/*        UserDatabase userDatabase=new UserDatabase(MainActivity.this);
         SQLiteDatabase sqLiteDatabase=userDatabase.getWritableDatabase();
         //遍历数据库
         Cursor cursor=sqLiteDatabase.query(Constant.ACCOUNT_TABLE_NAME,null,null,null,null,null,null);
@@ -63,7 +76,7 @@ public class MainActivity extends BaseActivity {
                 break;
             }
         }
-        cursor.close();
+        cursor.close();*/
     }
 
 
