@@ -14,7 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.tododemo.Bean.UserBean;
 import com.example.tododemo.R;
+import com.example.tododemo.SQLite.CRUD;
 import com.example.tododemo.SQLite.Constant;
 import com.example.tododemo.SQLite.UserDatabase;
 import com.google.android.material.button.MaterialButton;
@@ -24,8 +26,8 @@ import java.util.Objects;
 
 public class LoginFragment extends Fragment {
 
-    private TextInputLayout til_account;
-    private TextInputLayout til_password;
+    private TextInputLayout til_account; // 账号
+    private TextInputLayout til_password; // 密码
     private MaterialButton mb_login;
 
     @Nullable
@@ -50,12 +52,29 @@ public class LoginFragment extends Fragment {
 
     private void loginAccount() {
         mb_login.setOnClickListener(view -> {
-            String username= Objects.requireNonNull(til_account.getEditText()).getText().toString();
+            // 取出账号和密码两个输入框的文本
+            String username = Objects.requireNonNull(til_account.getEditText()).getText().toString();
             String password= Objects.requireNonNull(til_password.getEditText()).getText().toString();
+            // 文本为空
             if(username.isEmpty()||password.isEmpty()){
                 Toast.makeText(getActivity(), "输入不能为空", Toast.LENGTH_SHORT).show();
             }else {
-                UserDatabase userDatabase=new UserDatabase(getActivity());
+                // 文本不为空，遍历数据库判断有无此账号且密码是否相同
+                for (UserBean userBean : new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).RetrieveUser()) {
+                    if (userBean.getUsername().equals(username)&&userBean.getPassword().equals(password)){
+                        Toast.makeText(getActivity(), "登陆成功", Toast.LENGTH_SHORT).show();
+                        //更新数据库登陆状态--用户表中相关账号登陆状态 isLogin ->true
+                        ContentValues values=new ContentValues();
+                        values.put("isLogin", "true");
+                        new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).UpdateUser(values,userBean.getUsername());
+                        Constant.isLogin=true;
+                        Constant.username=username;
+                        getActivity().finish();
+                        break;
+                    }
+                }
+
+/*                UserDatabase userDatabase=new UserDatabase(getActivity());
                 SQLiteDatabase sqLiteDatabase=userDatabase.getWritableDatabase();
                 //遍历数据库
                 Cursor cursor=sqLiteDatabase.query(Constant.ACCOUNT_TABLE_NAME,null,null,null,null,null,null);
@@ -78,9 +97,9 @@ public class LoginFragment extends Fragment {
                         break;
                     }
 
-                }
+                }*/
+                // 根据登陆状态常量 判断登陆是否成功
                 if(!Constant.isLogin)Toast.makeText(getActivity(), "账号或者密码输入错误", Toast.LENGTH_SHORT).show();
-                cursor.close();
             }
         });
 

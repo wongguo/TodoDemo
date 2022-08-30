@@ -16,6 +16,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.tododemo.R;
+import com.example.tododemo.SQLite.CRUD;
 import com.example.tododemo.SQLite.Constant;
 import com.example.tododemo.SQLite.UserDatabase;
 import com.google.android.material.button.MaterialButton;
@@ -78,10 +79,11 @@ public class RegisterFragment extends Fragment {
                     values.put("username", username);
                     values.put("password", password);
                     values.put("isLogin","false");
-                    sqLiteDatabase.insert(Constant.ACCOUNT_TABLE_NAME, null, values);
+                    // 更新数据库，添加注册账号
+                    new CRUD(getContext(),Constant.ACCOUNT_TABLE_NAME).add(values);
                     values.clear();
                     //注册跳转登录
-                    view1.findViewById(R.id.registerToLogin)
+                    view1.findViewById(R.id.mb_register)
                             .setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_registerFragment_to_loginFragment));
                     Toast.makeText(getActivity(), "注册成功，跳转回登录界面", Toast.LENGTH_SHORT).show();
                 }else {

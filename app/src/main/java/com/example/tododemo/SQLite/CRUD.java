@@ -15,23 +15,30 @@ import com.example.tododemo.MyApplication;
 import java.util.ArrayList;
 import java.util.List;
 
+// 对两表的操作
 public class CRUD {
-    private SQLiteOpenHelper dbHelper;
-    private SQLiteDatabase db;
-    private String name;
+    private final SQLiteDatabase db;
+    private final String name;
 
-    public CRUD(String name) {
-        dbHelper = new UserDatabase(MyApplication.getContext());
+
+    // 传入参数为表名
+    public CRUD(Context context,String name) {
+        SQLiteOpenHelper dbHelper = new UserDatabase(context);
         db = dbHelper.getWritableDatabase();
+        // 将表名赋值给全局变量
         this.name = name;
     }
-    public void Create(ContentValues values){
+
+    /**
+     * 往表里添加数据
+     */
+    public void add(ContentValues values){
         db.insert(name,null,values);
+
     }
 
     /**
      * 查询User表下所有数据，返回用户集合
-     * @return
      */
     @SuppressLint("Range")
     public List<UserBean> RetrieveUser(){
@@ -40,9 +47,11 @@ public class CRUD {
         if (cursor.moveToFirst()){
             do {
                 userBeans.add(new UserBean(cursor.getString(cursor.getColumnIndex("username")),
-                        cursor.getString(cursor.getColumnIndex("password"))));
+                        cursor.getString(cursor.getColumnIndex("password")),
+                        cursor.getString(cursor.getColumnIndex("isLogin"))));
             }while (cursor.moveToNext());
         }
+        cursor.close();
         return userBeans;
     }
     @SuppressLint("Range")
@@ -58,21 +67,21 @@ public class CRUD {
                         cursor.getString(cursor.getColumnIndex("date"))));
             }while (cursor.moveToNext());
         }
+        cursor.close();
         return todoBeans;
     }
 
     /**
      * 更新用户表信息， 根据唯一用户名为据
-     * @param values
-     * @param userName
      */
     public void UpdateUser(ContentValues values,String userName){
         // 须先判断该用户名是否有相同
         int judge = 0;
         Object userName1 = values.get("userName");
         for (UserBean userBean : RetrieveUser()) {
-            if (userBean.getUsername().equals(userName1)){
+            if (userBean.getUsername().equals(userName1)) {
                 judge = 1;
+                break;
             }
         }
         if (judge == 0){
@@ -83,8 +92,8 @@ public class CRUD {
     }
 
     /**
+     * 必须本人才能更新相关Todo
      * 根据日期修改Todo
-     * @param values
      */
     public void UpdateTodo(ContentValues values,String time){
         db.update(name,values,"time = ?",new String[]{time});
@@ -94,7 +103,7 @@ public class CRUD {
      * 注销账号
      */
     public void DeleteUser(String userName){
-        db.delete(name,"userNmae = ?", new String[]{userName});
+        db.delete(name,"userName = ?", new String[]{userName});
     }
 
     // 必须是本人才能删除
