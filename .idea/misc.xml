@@ -7,12 +7,14 @@
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/activity_login.xml" value="0.2421875" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/activity_main.xml" value="0.26621847886098404" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/activity_result.xml" value="0.2421875" />
+        <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/dialog_account.xml" value="0.2421875" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/dialog_add.xml" value="0.26621847886098404" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/dialog_search.xml" value="0.24322916666666666" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/fragment_login.xml" value="0.20168066580377575" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/fragment_register.xml" value="0.26621847886098404" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/item_style_one.xml" value="0.24166666666666667" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/item_style_two.xml" value="0.4033613316075515" />
+        <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/item_todo.xml" value="0.26621847886098404" />
         <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/layout/activity_main.xml" value="0.2210144927536232" />
       </map>
     </option>
@@ -26,7 +28,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.24322916666666666" />
+        <option name="scale" value="0.26621847886098404" />
       </ProjectState>
     </option>
   </component>

@@ -19,12 +19,17 @@
     <string name="tb_add">添加待办</string>
     <string name="add">添加</string>
     <string name="title">待办事项</string>
-    <string name="content">详情(非必填)</string>
+    <string name="classification">待办分类</string>
     <string name="time">选择完成时间</string>
 
     <!--搜索-->
     <string name="tb_search">搜索</string>
     <string name="tb_result">搜索结果</string>
+    
+    <!--账号功能-->
+    <string name="public_account">公共账号</string>
+    <string name="change_username">修改用户名</string>
+    <string name="change_password">修改密码</string>
 
 
 </resources>
