@@ -16,7 +16,8 @@ public class UserDatabase extends SQLiteOpenHelper {
         //账号密码表
         String account="create table "+Constant.ACCOUNT_TABLE_NAME+
                 "(username text,"+
-                "password text)";
+                "password text,"+
+                "isLogin text)";
         sqLiteDatabase.execSQL(account);
         //todo表
         String todoList="create table "+Constant.TODO_TABLE_NAME+

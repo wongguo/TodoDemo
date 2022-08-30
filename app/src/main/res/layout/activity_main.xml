@@ -13,10 +13,24 @@
         android:layout_height="wrap_content"
         android:background="@color/main_color"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_baseline_person_24"
         app:title="@string/toolbar"
         app:titleCentered="true"
         app:titleTextColor="@color/white" />
+
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/efab_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/main_color"
+        app:icon="@drawable/ic_baseline_person_24"
+        app:iconTint="@color/white"
+        android:text="@string/public_account"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/mtb_main"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_search"
@@ -30,6 +44,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
