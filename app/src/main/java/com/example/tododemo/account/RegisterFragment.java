@@ -33,12 +33,9 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
-
         init(view);
-
         return view;
     }
-
     /**
      * 初始化控件
      * @param view 视图
@@ -51,7 +48,6 @@ public class RegisterFragment extends Fragment {
         //注册跳转登录
         view.findViewById(R.id.registerToLogin)
                 .setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_registerFragment_to_loginFragment));
-
         saveAccount();
     }
 
@@ -75,6 +71,7 @@ public class RegisterFragment extends Fragment {
                     values.put("password", password);
                     sqLiteDatabase.insert(Constant.ACCOUNT_TABLE_NAME, null, values);
                     values.clear();
+                    view.findViewById(R.id.mb_register).setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_loginFragment_to_registerFragment));
                     Toast.makeText(getActivity(), "注册成功", Toast.LENGTH_SHORT).show();
                 }
             }
