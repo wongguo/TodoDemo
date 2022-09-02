@@ -60,18 +60,17 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(getActivity(), "输入不能为空", Toast.LENGTH_SHORT).show();
             }else {
                 // 文本不为空，遍历数据库判断有无此账号且密码是否相同
-                for (UserBean userBean : new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).RetrieveUser()) {
-                    if (userBean.getUsername().equals(username)&&userBean.getPassword().equals(password)){
-                        Toast.makeText(getActivity(), "登陆成功", Toast.LENGTH_SHORT).show();
-                        //更新数据库登陆状态--用户表中相关账号登陆状态 isLogin ->true
-                        ContentValues values=new ContentValues();
-                        values.put("isLogin", "true");
-                        new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).UpdateUser(values,userBean.getUsername());
-                        Constant.isLogin=true;
-                        Constant.username=username;
-                        getActivity().finish();
-                        break;
-                    }
+                if (!(new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).isExist(username,password))){
+                    Toast.makeText(getActivity(), "登陆成功", Toast.LENGTH_SHORT).show();
+                    //更新数据库登陆状态--用户表中相关账号登陆状态 isLogin ->true
+                    ContentValues values=new ContentValues();
+                    values.put("isLogin", "true");
+                    new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).UpdateUser(values,username);
+                    Constant.isLogin=true;
+                    Constant.username=username;
+                    getActivity().finish();
+                }else {
+                    Toast.makeText(getActivity(), "账号或者密码输入错误", Toast.LENGTH_SHORT).show();
                 }
 
 /*                UserDatabase userDatabase=new UserDatabase(getActivity());
@@ -99,7 +98,7 @@ public class LoginFragment extends Fragment {
 
                 }*/
                 // 根据登陆状态常量 判断登陆是否成功
-                if(!Constant.isLogin)Toast.makeText(getActivity(), "账号或者密码输入错误", Toast.LENGTH_SHORT).show();
+              //  if(!Constant.isLogin)Toast.makeText(getActivity(), "账号或者密码输入错误", Toast.LENGTH_SHORT).show();
             }
         });
 
