@@ -60,7 +60,7 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(getActivity(), "输入不能为空", Toast.LENGTH_SHORT).show();
             }else {
                 // 文本不为空，遍历数据库判断有无此账号且密码是否相同
-                if (!(new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).isExist(username,password))){
+                if (new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).isExist(username,password)){
                     Toast.makeText(getActivity(), "登陆成功", Toast.LENGTH_SHORT).show();
                     //更新数据库登陆状态--用户表中相关账号登陆状态 isLogin ->true
                     ContentValues values=new ContentValues();

@@ -67,7 +67,7 @@ public class RegisterFragment extends Fragment {
             }else if(!password.equals(rePassword)){
                 Toast.makeText(getActivity(), "密码输入不一致", Toast.LENGTH_SHORT).show();
             }else {
-                if(new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).isExist(username,password)) {
+                if(!(new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).isExist(username,password))) {
                     //注册账号
                     ContentValues values = new ContentValues();
                     values.put("username", username);
