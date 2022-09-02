@@ -118,14 +118,19 @@ public class CRUD {
      * 更新用户表信息， 根据唯一用户名为据
      */
     public void UpdateUser(ContentValues values,String userName){
-        // 须先判断该用户名是否有相同
-        String username = (String) values.get("username");
-        // 无相同用户名
-        if ((isExistSame(username))){
-            db.update(name,values,"userName = ?",new String[]{userName});
+        String isLogin = (String) values.get("isLogin");
+        // 先判断是否登陆
+        if (isLogin.equals(true)){
+            // 判断该用户名是否有相同
+            if ((isExistSame(userName))){
+                db.update(name,values,"userName = ?",new String[]{userName});
+            }else {
+                Toast.makeText(MyApplication.getContext(),"用户名已经被占用",Toast.LENGTH_SHORT).show();
+            }
         }else {
-            Toast.makeText(MyApplication.getContext(),"用户名已经被占用",Toast.LENGTH_SHORT).show();
+            db.update(name,values,"userName = ?",new String[]{userName});
         }
+
     }
 
     /**
