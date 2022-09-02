@@ -1,8 +1,6 @@
 package com.example.tododemo.account;
 
 import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.tododemo.Bean.UserBean;
 import com.example.tododemo.R;
 import com.example.tododemo.SQLite.CRUD;
 import com.example.tododemo.SQLite.Constant;
-import com.example.tododemo.SQLite.UserDatabase;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -30,14 +28,12 @@ public class RegisterFragment extends Fragment {
     private TextInputLayout til_repassword;
     private TextInputLayout til_reg_password;
     private TextInputLayout til_reg_account;
-    private UserDatabase userDatabase;
-    private SQLiteDatabase sqLiteDatabase;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
-
         init(view);
 
         return view;
@@ -55,9 +51,7 @@ public class RegisterFragment extends Fragment {
         //注册跳转登录
         view.findViewById(R.id.registerToLogin)
                 .setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_registerFragment_to_loginFragment));
-        //数据库加载
-        userDatabase = new UserDatabase(getActivity());
-        sqLiteDatabase = userDatabase.getWritableDatabase();
+
 
         saveAccount(view);
     }
@@ -73,18 +67,19 @@ public class RegisterFragment extends Fragment {
             }else if(!password.equals(rePassword)){
                 Toast.makeText(getActivity(), "密码输入不一致", Toast.LENGTH_SHORT).show();
             }else {
-                if(!isExist(username)) {
+                if(new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).isExist(username,password)) {
                     //注册账号
                     ContentValues values = new ContentValues();
                     values.put("username", username);
                     values.put("password", password);
                     values.put("isLogin","false");
-                    // 更新数据库，添加注册账号
                     new CRUD(getContext(),Constant.ACCOUNT_TABLE_NAME).add(values);
                     values.clear();
-                    //注册跳转登录
+                    NavController controller = Navigation.findNavController(view1);
+                    controller.navigate(R.id.action_registerFragment_to_loginFragment);
+/*                    //注册跳转登录
                     view1.findViewById(R.id.mb_register)
-                            .setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_registerFragment_to_loginFragment));
+                            .setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_registerFragment_to_loginFragment));*/
                     Toast.makeText(getActivity(), "注册成功，跳转回登录界面", Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(getActivity(), "该用户已存在", Toast.LENGTH_SHORT).show();
@@ -93,21 +88,16 @@ public class RegisterFragment extends Fragment {
         });
     }
 
-    //判断是否存在该用户
+/*    //判断是否存在该用户
     private boolean isExist(String register_name){
         //遍历数据库
-        Cursor cursor=sqLiteDatabase.query(Constant.ACCOUNT_TABLE_NAME,null,null,null,null,null,null);
-        while (cursor.moveToNext()){
-            int index_user=cursor.getColumnIndex("username");
-            String exist_user=cursor.getString(index_user);
-            if(exist_user.equals(register_name)){
-                cursor.close();
+        for (UserBean userBean : new CRUD(getActivity(), Constant.ACCOUNT_TABLE_NAME).RetrieveUser()) {
+            if (userBean.getUsername().equals(register_name)){
                 return true;
             }
         }
-        cursor.close();
         return false;
-    }
+    }*/
 
 
 }

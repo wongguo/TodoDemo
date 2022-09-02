@@ -36,24 +36,67 @@ public class CRUD {
         db.insert(name,null,values);
 
     }
-
     /**
-     * 查询User表下所有数据，返回用户集合
+     * 登录时检测账号是否存在,根据结果返回true or false
      */
     @SuppressLint("Range")
-    public List<UserBean> RetrieveUser(){
-        List<UserBean> userBeans = new ArrayList<>();
+    public boolean isExist(String userName,String password){
         Cursor cursor = db.query(name,null,null,null,null,null,null);
         if (cursor.moveToFirst()){
             do {
-                userBeans.add(new UserBean(cursor.getString(cursor.getColumnIndex("username")),
-                        cursor.getString(cursor.getColumnIndex("password")),
-                        cursor.getString(cursor.getColumnIndex("isLogin"))));
+                // 检测到账号存在
+                if (cursor.getString(cursor.getColumnIndex("username")).equals(userName)&&cursor
+                        .getString(cursor.getColumnIndex("password")).equals(password)){
+                    return true;
+                }
             }while (cursor.moveToNext());
         }
-        cursor.close();
-        return userBeans;
+        // 账号不存在
+        return false;
     }
+    /**
+     * 修改用户名的时候进行查找是否存在相同用户名
+     * 为类私有方法
+     */
+    @SuppressLint("Range")
+    private boolean isExistSame(String userName){
+        Cursor cursor = db.query(name,null,null,null,null,null,null);
+        if (cursor.moveToFirst()){
+            do {
+                // 检测到用户名相同存在
+                if (cursor.getString(cursor.getColumnIndex("username")).equals(userName)){
+                    return true;
+                }
+            }while (cursor.moveToNext());
+        }
+        // 不存在
+        return false;
+    }
+    /**
+     * 检测是否为登录状态  根据结果返回true or false
+     */
+    @SuppressLint("Range")
+    public UserBean isLogin(){
+        UserBean userBean;
+        Cursor cursor = db.query(name,null,null,null,null,null,null);
+        if (cursor.moveToFirst()){
+            do {
+                // 检测到有登录账号
+                if (cursor.getString(cursor.getColumnIndex("isLogin")).equals("true")){
+                    userBean = new UserBean(cursor.getString(cursor.getColumnIndex("username")),
+                            cursor.getString(cursor.getColumnIndex("password")),
+                            cursor.getString(cursor.getColumnIndex("isLogin")));
+                    return userBean;
+                }
+            }while (cursor.moveToNext());
+        }
+        // 不存在登录账号
+        return null;
+    }
+
+    /**
+     * 查找所有笔记，返回笔记集合
+     */
     @SuppressLint("Range")
     public List<TodoBean> RetrieveTodo(){
         List<TodoBean> todoBeans = new ArrayList<>();
@@ -76,15 +119,9 @@ public class CRUD {
      */
     public void UpdateUser(ContentValues values,String userName){
         // 须先判断该用户名是否有相同
-        int judge = 0;
-        Object userName1 = values.get("userName");
-        for (UserBean userBean : RetrieveUser()) {
-            if (userBean.getUsername().equals(userName1)) {
-                judge = 1;
-                break;
-            }
-        }
-        if (judge == 0){
+        String username = (String) values.get("username");
+        // 无相同用户名
+        if ((isExistSame(username))){
             db.update(name,values,"userName = ?",new String[]{userName});
         }else {
             Toast.makeText(MyApplication.getContext(),"用户名已经被占用",Toast.LENGTH_SHORT).show();
