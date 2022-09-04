@@ -3,7 +3,7 @@ package com.example.tododemo.account;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.example.tododemo.BaseActivity;
 import com.example.tododemo.R;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -33,6 +33,5 @@ public class AccountActivity extends BaseActivity {
     protected void initListener() {
         mtb_account.setNavigationOnClickListener(view -> finish());
     }
-
 
 }

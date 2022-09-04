@@ -34,10 +34,9 @@ public class CRUD {
      */
     public void add(ContentValues values){
         db.insert(name,null,values);
-
     }
     /**
-     * 登录时检测账号是否存在,根据结果返回true or false
+     * 登录注册时判断账号是否存在,根据结果返回true or false
      */
     @SuppressLint("Range")
     public boolean isExist(String userName,String password){
@@ -47,28 +46,31 @@ public class CRUD {
                 // 检测到账号存在
                 if (cursor.getString(cursor.getColumnIndex("username")).equals(userName)&&cursor
                         .getString(cursor.getColumnIndex("password")).equals(password)){
+                    cursor.close();
                     return true;
                 }
             }while (cursor.moveToNext());
         }
+        cursor.close();
         // 账号不存在
         return false;
     }
     /**
      * 修改用户名的时候进行查找是否存在相同用户名
-     * 为类私有方法
      */
     @SuppressLint("Range")
-    private boolean isExistSame(String userName){
+    public boolean isExistSame(String userName){
         Cursor cursor = db.query(name,null,null,null,null,null,null);
         if (cursor.moveToFirst()){
             do {
                 // 检测到用户名相同存在
                 if (cursor.getString(cursor.getColumnIndex("username")).equals(userName)){
+                    cursor.close();
                     return true;
                 }
             }while (cursor.moveToNext());
         }
+        cursor.close();
         // 不存在
         return false;
     }
@@ -86,10 +88,12 @@ public class CRUD {
                     userBean = new UserBean(cursor.getString(cursor.getColumnIndex("username")),
                             cursor.getString(cursor.getColumnIndex("password")),
                             cursor.getString(cursor.getColumnIndex("isLogin")));
+                    cursor.close();
                     return userBean;
                 }
             }while (cursor.moveToNext());
         }
+        cursor.close();
         // 不存在登录账号
         return null;
     }
@@ -115,22 +119,10 @@ public class CRUD {
     }
 
     /**
-     * 更新用户表信息， 根据唯一用户名为据
+     * 根据用户名更新用户表信息
      */
     public void UpdateUser(ContentValues values,String userName){
-        String isLogin = (String) values.get("isLogin");
-        // 先判断是否登陆
-        if (isLogin.equals(true)){
-            // 判断该用户名是否有相同
-            if ((isExistSame(userName))){
-                db.update(name,values,"userName = ?",new String[]{userName});
-            }else {
-                Toast.makeText(MyApplication.getContext(),"用户名已经被占用",Toast.LENGTH_SHORT).show();
-            }
-        }else {
-            db.update(name,values,"userName = ?",new String[]{userName});
-        }
-
+        db.update(name,values,"userName = ?",new String[]{userName});
     }
 
     /**
