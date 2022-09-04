@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 public class UserDatabase extends SQLiteOpenHelper {
+
     public UserDatabase(@Nullable Context context) {
         super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
     }
@@ -33,4 +34,6 @@ public class UserDatabase extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
+
+
 }

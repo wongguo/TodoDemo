@@ -1,9 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@drawable/shape_round"
+    android:orientation="horizontal">
 
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="91dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="20sp"
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_img"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@color/black"
+            app:shapeAppearanceOverlay="@style/ImageViewCircle"
+            app:srcCompat="@drawable/ic_baseline_person_24" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20sp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mb_change_name"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/main_color"
+            android:text="@string/change_username" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mb_change_key"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mb_change_name"
+            android:text="@string/change_password" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mb_exit"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mb_change_key"
+            android:backgroundTint="@color/main_color"
+            android:text="@string/exit_account" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mb_delete"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mb_exit"
+            android:backgroundTint="@color/red"
+            android:text="@string/delete_account"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</LinearLayout>
