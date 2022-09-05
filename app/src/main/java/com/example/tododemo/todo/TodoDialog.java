@@ -77,7 +77,23 @@ public class TodoDialog extends BaseDialog {
 
 
         mb_add.setOnClickListener(view -> {
-
+            String title=ti_et_title.getText().toString();
+            String classify=ti_et_classify.getText().toString();
+            if(title.isEmpty()){
+                Toast.makeText(context, "待办事项不为空", Toast.LENGTH_SHORT).show();
+            }else {
+                if (classify.isEmpty()) classify="默认";
+                CRUD crud=new CRUD(context, Constant.TODO_TABLE_NAME);
+                ContentValues values=new ContentValues();
+                values.put("username",Constant.username);
+                values.put("title",title);
+                values.put("classify",classify);
+                values.put("date",select_time);
+                crud.add(values);
+                values.clear();
+                Toast.makeText(context, "添加成功", Toast.LENGTH_SHORT).show();
+                dismiss();
+            }
         });
     }
 
