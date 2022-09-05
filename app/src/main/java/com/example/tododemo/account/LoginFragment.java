@@ -1,8 +1,6 @@
 package com.example.tododemo.account;
 
 import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import com.example.tododemo.Bean.UserBean;
 import com.example.tododemo.R;
 import com.example.tododemo.SQLite.CRUD;
 import com.example.tododemo.SQLite.Constant;
-import com.example.tododemo.SQLite.UserDatabase;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 

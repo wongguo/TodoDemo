@@ -5,7 +5,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.example.tododemo.Dialog.BaseDialog;
 import com.example.tododemo.R;
 import com.example.tododemo.SQLite.Constant;
 import com.google.android.material.button.MaterialButton;

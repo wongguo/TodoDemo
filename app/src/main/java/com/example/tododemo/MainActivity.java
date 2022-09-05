@@ -1,16 +1,14 @@
 package com.example.tododemo;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.example.tododemo.Bean.UserBean;
+import com.example.tododemo.Dialog.NormalDialog;
 import com.example.tododemo.SQLite.CRUD;
 import com.example.tododemo.SQLite.Constant;
-import com.example.tododemo.SQLite.UserDatabase;
 import com.example.tododemo.account.AccountActivity;
 import com.example.tododemo.account.UserDialog;
+import com.example.tododemo.todo.TodoDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -76,12 +74,27 @@ public class MainActivity extends BaseActivity {
 
         //搜索功能
         mb_search.setOnClickListener(view -> {
+            String title="搜索";
+            String hint="请输入搜索内容";
+            NormalDialog dialog=new NormalDialog(MainActivity.this,Constant.EDIT_DIALOG,title,hint);
+            dialog.setItemOnClickListener(new NormalDialog.ItemOnClickListener() {
+                @Override
+                public void onPositiveClick() {
+                    dialog.dismiss();
+                }
 
+                @Override
+                public void onNegativeClick() {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
         });
 
         //添加todo
         fab_add.setOnClickListener(view -> {
-
+            TodoDialog todoDialog=new TodoDialog(MainActivity.this,getSupportFragmentManager());
+            todoDialog.show();
         });
     }
 

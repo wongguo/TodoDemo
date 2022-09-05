@@ -8,9 +8,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.tododemo.Dialog.BaseDialog;
 import com.example.tododemo.Dialog.NormalDialog;

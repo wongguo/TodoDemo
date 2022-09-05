@@ -6,11 +6,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 import com.example.tododemo.Bean.TodoBean;
 import com.example.tododemo.Bean.UserBean;
-import com.example.tododemo.MyApplication;
 
 import java.util.ArrayList;
 import java.util.List;

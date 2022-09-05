@@ -1,7 +1,6 @@
 package com.example.tododemo.account;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,8 +29,6 @@ public class RegisterFragment extends Fragment {
     private TextInputLayout til_repassword;
     private TextInputLayout til_reg_password;
     private TextInputLayout til_reg_account;
-    private UserDatabase userDatabase;
-    private SQLiteDatabase sqLiteDatabase;
 
     @Nullable
     @Override
@@ -56,9 +53,6 @@ public class RegisterFragment extends Fragment {
         //注册跳转登录
         view.findViewById(R.id.registerToLogin)
                 .setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_registerFragment_to_loginFragment));
-        //数据库加载
-        userDatabase = new UserDatabase(getActivity());
-        sqLiteDatabase = userDatabase.getWritableDatabase();
 
         saveAccount(view);
     }
@@ -74,16 +68,16 @@ public class RegisterFragment extends Fragment {
             } else if (!password.equals(rePassword)) {
                 Toast.makeText(getActivity(), "密码输入不一致", Toast.LENGTH_SHORT).show();
             } else {
-                if (new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).isExistSame(username)) {
+                if (new CRUD(getActivity(), Constant.ACCOUNT_TABLE_NAME).isExistSame(username)) {
                     //注册账号
                     ContentValues values = new ContentValues();
                     values.put("username", username);
                     values.put("password", password);
                     values.put("isLogin", "false");
-                    new CRUD(getActivity(),Constant.ACCOUNT_TABLE_NAME).add(values);
+                    new CRUD(getActivity(), Constant.ACCOUNT_TABLE_NAME).add(values);
                     values.clear();
                     //注册跳转登录
-                    NavController controller=Navigation.findNavController(view);
+                    NavController controller = Navigation.findNavController(view);
                     controller.navigate(R.id.action_registerFragment_to_loginFragment);
                     Toast.makeText(getActivity(), "注册成功，跳转回登录界面", Toast.LENGTH_SHORT).show();
                 } else {
