@@ -25,10 +25,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:backgroundTint="@color/main_color"
-        app:icon="@drawable/ic_baseline_person_24"
-        app:iconTint="@color/white"
         android:text="@string/public_account"
         android:textColor="@color/white"
+        app:icon="@drawable/ic_baseline_person_24"
+        app:iconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/mtb_main"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,18 +39,77 @@
         style="@style/MaterialButtonToImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
         app:icon="@drawable/ic_baseline_search_24"
+        app:iconGravity="end"
         app:layout_constraintBottom_toBottomOf="@+id/mtb_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mtb_main">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/radio_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/radio_todo"
+            android:layout_marginEnd="32dp"
+            android:buttonTint="@color/main_color"
+            android:textStyle="bold"
+            android:checked="true"/>
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/radio_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/radio_done"
+            android:buttonTint="@color/main_color"/>
+
+    </RadioGroup>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtv_classify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/classify_name"
+        android:textSize="16sp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/radioGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtb_main" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/rv_todo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mtb_main" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/red"
+        android:contentDescription="@string/delete"
+        android:src="@drawable/ic_baseline_delete_forever_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/fab_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
@@ -62,9 +121,9 @@
         android:backgroundTint="@color/main_color"
         android:contentDescription="@string/add"
         android:src="@drawable/ic_baseline_add_24"
-        app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

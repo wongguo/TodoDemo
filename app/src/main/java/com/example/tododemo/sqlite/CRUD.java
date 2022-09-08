@@ -1,4 +1,4 @@
-package com.example.tododemo.SQLite;
+package com.example.tododemo.sqlite;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -7,8 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.tododemo.Bean.TodoBean;
-import com.example.tododemo.Bean.UserBean;
+import com.example.tododemo.bean.TodoBean;
+import com.example.tododemo.bean.UserBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,17 +100,14 @@ public class CRUD {
      * 查找所有笔记，返回笔记集合
      */
     @SuppressLint("Range")
-    public List<TodoBean> RetrieveTodo(){
+    public List<TodoBean> RetrieveTodo(String name){
         List<TodoBean> todoBeans = new ArrayList<>();
-        Cursor cursor = db.query(name,null,null,null,null,null,null);
-        if (cursor.moveToFirst()){
-            do {
-                todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
-                        cursor.getString(cursor.getColumnIndex("title")),
-                        cursor.getString(cursor.getColumnIndex("content")),
-                        cursor.getString(cursor.getColumnIndex("classify")),
-                        cursor.getString(cursor.getColumnIndex("date"))));
-            }while (cursor.moveToNext());
+        Cursor cursor = db.query(Constant.TODO_TABLE_NAME,null,"username=?",new String[]{name},null,null,null);
+        while (cursor.moveToNext()){
+            todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
+                    cursor.getString(cursor.getColumnIndex("title")),
+                    cursor.getString(cursor.getColumnIndex("classify")),
+                    cursor.getString(cursor.getColumnIndex("date"))));
         }
         cursor.close();
         return todoBeans;

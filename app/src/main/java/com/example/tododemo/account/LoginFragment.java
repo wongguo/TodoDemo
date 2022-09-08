@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.example.tododemo.R;
-import com.example.tododemo.SQLite.CRUD;
-import com.example.tododemo.SQLite.Constant;
+import com.example.tododemo.sqlite.CRUD;
+import com.example.tododemo.sqlite.Constant;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 

@@ -1,4 +1,4 @@
-package com.example.tododemo.Dialog;
+package com.example.tododemo.dialog;
 
 import android.app.Dialog;
 import android.content.Context;

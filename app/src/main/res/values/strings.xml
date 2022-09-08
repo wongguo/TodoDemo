@@ -14,11 +14,18 @@
 
     <!--todo界面-->
     <string name="toolbar">Todo</string>
+    <string name="radio_todo">未完成</string>
+    <string name="radio_done">已完成</string>
+
+    <!--分类-->
+    <string name="classify_name">全部</string>
+    <string name="classify_title">分类</string>
 
     <!--添加待办-->
     <string name="tb_add">添加待办</string>
     <string name="add">添加</string>
     <string name="title">待办事项</string>
+    <string name="delete">删除</string>
 
     <string name="classification">待办分类</string>
     <string name="time">选择完成时间</string>

@@ -1,4 +1,4 @@
-package com.example.tododemo.Dialog;
+package com.example.tododemo.dialog;
 
 import android.content.Context;
 import android.view.View;
@@ -6,7 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.example.tododemo.R;
-import com.example.tododemo.SQLite.Constant;
+import com.example.tododemo.sqlite.Constant;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
@@ -79,7 +79,7 @@ public class NormalDialog extends BaseDialog {
         });
     }
 
-    public ItemOnClickListener itemOnClickListener;
+    private ItemOnClickListener itemOnClickListener;
 
     public void setItemOnClickListener(ItemOnClickListener itemOnClickListener) {
         this.itemOnClickListener = itemOnClickListener;

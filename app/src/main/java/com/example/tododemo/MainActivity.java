@@ -1,18 +1,29 @@
 package com.example.tododemo;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
 
-import com.example.tododemo.Bean.UserBean;
-import com.example.tododemo.Dialog.NormalDialog;
-import com.example.tododemo.SQLite.CRUD;
-import com.example.tododemo.SQLite.Constant;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.tododemo.bean.UserBean;
+import com.example.tododemo.dialog.NormalDialog;
+import com.example.tododemo.sqlite.CRUD;
+import com.example.tododemo.sqlite.Constant;
 import com.example.tododemo.account.AccountActivity;
 import com.example.tododemo.account.UserDialog;
+import com.example.tododemo.classify.ClassifyDialog;
+import com.example.tododemo.todo.TodoAdapter;
 import com.example.tododemo.todo.TodoDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.radiobutton.MaterialRadioButton;
+import com.google.android.material.textview.MaterialTextView;
 
 public class MainActivity extends BaseActivity {
 
@@ -20,7 +31,23 @@ public class MainActivity extends BaseActivity {
     private MaterialButton mb_search;
     private FloatingActionButton fab_add;
     private ExtendedFloatingActionButton efab_account;
+    private MaterialTextView mtv_classify;
+    private MaterialRadioButton radio_plan;
+    private MaterialRadioButton radio_finish;
+    private RecyclerView rv_todo;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initSQL();
+        initRecyclerView();
+    }
+
+    private void initRecyclerView() {
+        rv_todo.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        TodoAdapter adapter=new TodoAdapter(new CRUD(MainActivity.this,Constant.TODO_TABLE_NAME).RetrieveTodo(Constant.username));
+        rv_todo.setAdapter(adapter);
+    }
 
     @Override
     protected int getLayoutRes() {
@@ -36,7 +63,10 @@ public class MainActivity extends BaseActivity {
         mb_search = findViewById(R.id.mb_search);
         fab_add = findViewById(R.id.fab_add);
         efab_account = findViewById(R.id.efab_account);
-        initSQL();
+        mtv_classify = findViewById(R.id.mtv_classify);
+        radio_plan = findViewById(R.id.radio_plan);
+        radio_finish = findViewById(R.id.radio_finish);
+        rv_todo = findViewById(R.id.rv_todo);
     }
 
 
@@ -95,6 +125,31 @@ public class MainActivity extends BaseActivity {
         fab_add.setOnClickListener(view -> {
             TodoDialog todoDialog=new TodoDialog(MainActivity.this,getSupportFragmentManager());
             todoDialog.show();
+            todoDialog.setButtonOnClickListener((title, classify, time) -> {
+                if(title.isEmpty()){
+                    Toast.makeText(MainActivity.this, "待办事项不为空", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (classify.isEmpty()) classify="默认";
+                    CRUD crud=new CRUD(MainActivity.this, Constant.TODO_TABLE_NAME);
+                    ContentValues values=new ContentValues();
+                    values.put("username",Constant.username);
+                    values.put("title",title);
+                    values.put("classify",classify);
+                    values.put("date",time);
+                    values.put("isDone",false);
+                    crud.add(values);
+                    values.clear();
+                    Toast.makeText(MainActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
+                    todoDialog.dismiss();
+                    initRecyclerView();
+                }
+            });
+        });
+
+        //分类查看
+        mtv_classify.setOnClickListener(view -> {
+            ClassifyDialog dialog=new ClassifyDialog(MainActivity.this);
+            dialog.show();
         });
     }
 

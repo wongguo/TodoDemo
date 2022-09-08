@@ -1,4 +1,4 @@
-package com.example.tododemo.Bean;
+package com.example.tododemo.bean;
 
 public class UserBean {
     private String username;

@@ -1,7 +1,6 @@
 package com.example.tododemo.account;
 
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +14,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.tododemo.R;
-import com.example.tododemo.SQLite.CRUD;
-import com.example.tododemo.SQLite.Constant;
-import com.example.tododemo.SQLite.UserDatabase;
+import com.example.tododemo.sqlite.CRUD;
+import com.example.tododemo.sqlite.Constant;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -68,7 +66,7 @@ public class RegisterFragment extends Fragment {
             } else if (!password.equals(rePassword)) {
                 Toast.makeText(getActivity(), "密码输入不一致", Toast.LENGTH_SHORT).show();
             } else {
-                if (new CRUD(getActivity(), Constant.ACCOUNT_TABLE_NAME).isExistSame(username)) {
+                if (!new CRUD(getActivity(), Constant.ACCOUNT_TABLE_NAME).isExistSame(username)) {
                     //注册账号
                     ContentValues values = new ContentValues();
                     values.put("username", username);

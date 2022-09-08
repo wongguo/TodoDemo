@@ -7,15 +7,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.tododemo.Dialog.BaseDialog;
+import com.example.tododemo.dialog.BaseDialog;
 import com.example.tododemo.R;
-import com.example.tododemo.SQLite.CRUD;
-import com.example.tododemo.SQLite.Constant;
+import com.example.tododemo.sqlite.CRUD;
+import com.example.tododemo.sqlite.Constant;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,6 +28,7 @@ public class TodoDialog extends BaseDialog {
     private TextInputEditText ti_et_classify;
     private TextInputEditText ti_et_time;
     private MaterialDatePicker<Long> picker;
+    private ButtonOnClickListener buttonOnClickListener;
 
     public TodoDialog(@NonNull Context context, FragmentManager fragmentManager) {
         super(context);
@@ -77,24 +76,21 @@ public class TodoDialog extends BaseDialog {
 
 
         mb_add.setOnClickListener(view -> {
-            String title=ti_et_title.getText().toString();
-            String classify=ti_et_classify.getText().toString();
-            if(title.isEmpty()){
-                Toast.makeText(context, "待办事项不为空", Toast.LENGTH_SHORT).show();
-            }else {
-                if (classify.isEmpty()) classify="默认";
-                CRUD crud=new CRUD(context, Constant.TODO_TABLE_NAME);
-                ContentValues values=new ContentValues();
-                values.put("username",Constant.username);
-                values.put("title",title);
-                values.put("classify",classify);
-                values.put("date",select_time);
-                crud.add(values);
-                values.clear();
-                Toast.makeText(context, "添加成功", Toast.LENGTH_SHORT).show();
-                dismiss();
+            if(buttonOnClickListener!=null){
+                String title=ti_et_title.getText().toString();
+                String classify=ti_et_classify.getText().toString();
+                buttonOnClickListener.addTodoClick(title,classify,select_time);
             }
         });
+    }
+
+
+    public interface ButtonOnClickListener{
+        void addTodoClick(String title,String classify,String time);
+    }
+
+    public void setButtonOnClickListener(ButtonOnClickListener buttonOnClickListener) {
+        this.buttonOnClickListener = buttonOnClickListener;
     }
 
     public static String longToDate(long lo){
