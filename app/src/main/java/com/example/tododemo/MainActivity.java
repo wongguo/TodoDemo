@@ -130,6 +130,7 @@ public class MainActivity extends BaseActivity {
                     Toast.makeText(MainActivity.this, "待办事项不为空", Toast.LENGTH_SHORT).show();
                 }else {
                     if (classify.isEmpty()) classify="默认";
+                    //插入todo数据
                     CRUD crud=new CRUD(MainActivity.this, Constant.TODO_TABLE_NAME);
                     ContentValues values=new ContentValues();
                     values.put("username",Constant.username);

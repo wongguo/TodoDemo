@@ -11,6 +11,7 @@ import com.example.tododemo.dialog.BaseDialog;
 import com.example.tododemo.R;
 import com.example.tododemo.sqlite.CRUD;
 import com.example.tododemo.sqlite.Constant;
+import com.example.tododemo.sqlite.DateUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
@@ -22,7 +23,7 @@ public class TodoDialog extends BaseDialog {
 
     private final Context context;
     private final FragmentManager fragmentManager;
-    private String select_time = null;
+    private long select_time = 0L;
     private MaterialButton mb_add;
     private TextInputEditText ti_et_title;
     private TextInputEditText ti_et_classify;
@@ -58,8 +59,8 @@ public class TodoDialog extends BaseDialog {
         //设置MaterialDatePicker模式
         builder.setInputMode(MaterialDatePicker.INPUT_MODE_CALENDAR);
         //初始化日期选择器->选择今天
-        select_time=longToDate(MaterialDatePicker.todayInUtcMilliseconds());
-        ti_et_time.setText(select_time);
+        select_time=MaterialDatePicker.todayInUtcMilliseconds();
+        ti_et_time.setText(DateUtils.longToDate(select_time));
         picker = builder.build();
     }
 
@@ -69,8 +70,8 @@ public class TodoDialog extends BaseDialog {
             picker.show(fragmentManager,picker.toString());
             //监听日期选中后
             picker.addOnPositiveButtonClickListener(selection -> {
-                select_time=longToDate(selection);
-                ti_et_time.setText(select_time);
+                select_time=selection;
+                ti_et_time.setText(DateUtils.longToDate(select_time));
             });
         });
 
@@ -86,16 +87,11 @@ public class TodoDialog extends BaseDialog {
 
 
     public interface ButtonOnClickListener{
-        void addTodoClick(String title,String classify,String time);
+        void addTodoClick(String title,String classify,long time);
     }
 
     public void setButtonOnClickListener(ButtonOnClickListener buttonOnClickListener) {
         this.buttonOnClickListener = buttonOnClickListener;
     }
 
-    public static String longToDate(long lo){
-        Date date = new Date(lo);
-        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-        return sd.format(date);
-    }
 }

@@ -1,18 +1,30 @@
 package com.example.tododemo.bean;
 
-import com.chad.library.adapter.base.entity.MultiItemEntity;
 
-public class TodoBean implements MultiItemEntity {
+public class TodoBean{
     private String username;
     private String title;
+    private String content;
     private String classify;
     private String date;
 
-    public TodoBean(String username, String title,String classify, String date) {
+    public TodoBean(String username, String title, String content, String classify, String date) {
+        this.username = username;
+        this.title = title;
+        this.content = content;
+        this.classify = classify;
+        this.date = date;
+    }
+
+    public TodoBean(String username, String title, String classify, String date) {
         this.username = username;
         this.title = title;
         this.classify = classify;
         this.date = date;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public String getUsername() {
@@ -23,7 +35,6 @@ public class TodoBean implements MultiItemEntity {
         return title;
     }
 
-
     public String getClassify() {
         return classify;
     }
@@ -32,8 +43,4 @@ public class TodoBean implements MultiItemEntity {
         return date;
     }
 
-    @Override
-    public int getItemType() {
-        return 0;
-    }
 }

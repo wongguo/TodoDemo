@@ -13,7 +13,7 @@ import com.example.tododemo.bean.UserBean;
 import java.util.ArrayList;
 import java.util.List;
 
-// 对两表的操作
+// 对数据库的操作
 public class CRUD {
     private final SQLiteDatabase db;
     private final String name;
@@ -33,45 +33,42 @@ public class CRUD {
     public void add(ContentValues values){
         db.insert(name,null,values);
     }
+
+    //账号处理
+
     /**
      * 登录注册时判断账号是否存在,根据结果返回true or false
      */
     @SuppressLint("Range")
     public boolean isExist(String userName,String password){
-        Cursor cursor = db.query(name,null,null,null,null,null,null);
-        if (cursor.moveToFirst()){
-            do {
-                // 检测到账号存在
-                if (cursor.getString(cursor.getColumnIndex("username")).equals(userName)&&cursor
-                        .getString(cursor.getColumnIndex("password")).equals(password)){
-                    cursor.close();
-                    return true;
-                }
-            }while (cursor.moveToNext());
+        Cursor cursor = db.query(name,new String[]{"username","password"},"username=? and password",new String[]{userName,password},
+                null,null,null);
+        if (cursor.moveToNext()){
+            // 检测到账号存在
+            cursor.close();
+            return true;
         }
         cursor.close();
         // 账号不存在
         return false;
     }
+
     /**
      * 修改用户名的时候进行查找是否存在相同用户名
      */
     @SuppressLint("Range")
     public boolean isExistSame(String userName){
-        Cursor cursor = db.query(name,null,null,null,null,null,null);
-        if (cursor.moveToFirst()){
-            do {
-                // 检测到用户名相同存在
-                if (cursor.getString(cursor.getColumnIndex("username")).equals(userName)){
-                    cursor.close();
-                    return true;
-                }
-            }while (cursor.moveToNext());
+        Cursor cursor = db.query(name,new String[]{"username"},"username=?",new String[]{userName},null,null,null);
+        if (cursor.moveToNext()){
+            // 检测到用户名相同存在
+            cursor.close();
+            return true;
         }
         cursor.close();
         // 不存在
         return false;
     }
+
     /**
      * 检测是否为登录状态  根据结果返回true or false
      */
@@ -79,38 +76,19 @@ public class CRUD {
     public UserBean isLogin(){
         UserBean userBean;
         Cursor cursor = db.query(name,null,null,null,null,null,null);
-        if (cursor.moveToFirst()){
-            do {
-                // 检测到有登录账号
-                if (cursor.getString(cursor.getColumnIndex("isLogin")).equals("true")){
-                    userBean = new UserBean(cursor.getString(cursor.getColumnIndex("username")),
-                            cursor.getString(cursor.getColumnIndex("password")),
-                            cursor.getString(cursor.getColumnIndex("isLogin")));
-                    cursor.close();
-                    return userBean;
-                }
-            }while (cursor.moveToNext());
+        while (cursor.moveToNext()){
+            // 检测到有登录账号
+            if (cursor.getString(cursor.getColumnIndex("isLogin")).equals("true")){
+                userBean = new UserBean(cursor.getString(cursor.getColumnIndex("username")),
+                        cursor.getString(cursor.getColumnIndex("password")),
+                        cursor.getString(cursor.getColumnIndex("isLogin")));
+                cursor.close();
+                return userBean;
+            }
         }
         cursor.close();
         // 不存在登录账号
         return null;
-    }
-
-    /**
-     * 查找所有笔记，返回笔记集合
-     */
-    @SuppressLint("Range")
-    public List<TodoBean> RetrieveTodo(String name){
-        List<TodoBean> todoBeans = new ArrayList<>();
-        Cursor cursor = db.query(Constant.TODO_TABLE_NAME,null,"username=?",new String[]{name},null,null,null);
-        while (cursor.moveToNext()){
-            todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
-                    cursor.getString(cursor.getColumnIndex("title")),
-                    cursor.getString(cursor.getColumnIndex("classify")),
-                    cursor.getString(cursor.getColumnIndex("date"))));
-        }
-        cursor.close();
-        return todoBeans;
     }
 
     /**
@@ -121,6 +99,50 @@ public class CRUD {
     }
 
     /**
+     * 注销账号
+     */
+    public void DeleteUser(String userName){
+        db.delete(name,"userName = ?", new String[]{userName});
+    }
+
+    //Todo处理
+
+    /**
+     * 返回账号所属所有Todo集合
+     */
+    @SuppressLint("Range")
+    public List<TodoBean> RetrieveTodo(String username){
+        List<TodoBean> todoBeans = new ArrayList<>();
+        Cursor cursor = db.query(name,null,"username=?",new String[]{username},
+                null,null,"date DESC");
+        while (cursor.moveToNext()){
+            todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
+                    cursor.getString(cursor.getColumnIndex("title")),
+                    cursor.getString(cursor.getColumnIndex("classify")),
+                    DateUtils.longToDate(cursor.getLong(cursor.getColumnIndex("date")))));
+        }
+        cursor.close();
+        return todoBeans;
+    }
+
+    /**
+     * 获取登录账号的todo时间列表
+     * @return List<String>
+     */
+    @SuppressLint("Range")
+    public List<String> getTodoDateList() {
+        List<String> todoDateList=new ArrayList<>();
+        Cursor cursor = db.query(name,null,"username=?",new String[]{Constant.username},
+                null,null,"date DESC");
+        while (cursor.moveToNext()){
+            String date=DateUtils.longToDate(cursor.getLong(cursor.getColumnIndex("date")));
+            if(!todoDateList.contains(date)) todoDateList.add(date);
+        }
+        cursor.close();
+        return todoDateList;
+    }
+
+    /**
      * 必须本人才能更新相关Todo
      * 根据日期修改Todo
      */
@@ -128,16 +150,9 @@ public class CRUD {
         db.update(name,values,"time = ?",new String[]{time});
     }
 
-    /**
-     * 注销账号
-     */
-    public void DeleteUser(String userName){
-        db.delete(name,"userName = ?", new String[]{userName});
-    }
-
     // 必须是本人才能删除
-    public void DeleteTodo(String time){
+    public void DeleteTodo(String title){
         // 此处需对当前账户和TOdo账户进行一个遍历对等操作
-        db.delete(name,"time = ?",new String[]{time});
+        db.delete(name,"time = ?",new String[]{title});
     }
 }

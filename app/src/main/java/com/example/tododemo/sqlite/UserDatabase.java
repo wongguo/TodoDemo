@@ -20,16 +20,15 @@ public class UserDatabase extends SQLiteOpenHelper {
                 "password text,"+
                 "isLogin text)";
         sqLiteDatabase.execSQL(account);
-        //day-todo表
+        //todo表
         String todoList="create table "+Constant.TODO_TABLE_NAME+
                 "(username text,"+
                 "title text,"+
                 "content text,"+
                 "classify text,"+
-                "date text,"+
+                "date Integer,"+
                 "isDone text)";
         sqLiteDatabase.execSQL(todoList);
-        //todo表
     }
 
     @Override
