@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/drawable/checkbox_bg.xml" value="0.1" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.1395" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/drawable/shape_round.xml" value="0.14" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/drawable/shape_toolbar.xml" value="0.14" />

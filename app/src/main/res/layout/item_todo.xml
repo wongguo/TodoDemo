@@ -19,6 +19,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
+                android:buttonTint="@color/main_color"
+                android:checked="false"
                 android:layout_weight="1" />
 
             <LinearLayout

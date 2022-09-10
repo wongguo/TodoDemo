@@ -3,12 +3,20 @@ package com.example.tododemo;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnItemLongClickListener;
 import com.example.tododemo.bean.UserBean;
 import com.example.tododemo.dialog.NormalDialog;
 import com.example.tododemo.sqlite.CRUD;
@@ -20,6 +28,7 @@ import com.example.tododemo.todo.TodoAdapter;
 import com.example.tododemo.todo.TodoDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
@@ -35,17 +44,49 @@ public class MainActivity extends BaseActivity {
     private MaterialRadioButton radio_plan;
     private MaterialRadioButton radio_finish;
     private RecyclerView rv_todo;
+    private TodoAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initSQL();
         initRecyclerView();
+        initAdapterListener();
+    }
+
+    private void initAdapterListener() {
+        //todo单击编辑
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+
+            }
+        });
+
+        //todo长按打开popupmenu
+        adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                return false;
+            }
+        });
+
+        //checkBox选中
+        adapter.addChildClickViewIds(R.id.cb_todo);
+        adapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                if(view.getId()==R.id.cb_todo){
+
+
+                }
+            }
+        });
     }
 
     private void initRecyclerView() {
         rv_todo.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        TodoAdapter adapter=new TodoAdapter(new CRUD(MainActivity.this,Constant.TODO_TABLE_NAME).RetrieveTodo(Constant.username));
+        adapter = new TodoAdapter(new CRUD(MainActivity.this,Constant.TODO_TABLE_NAME).RetrieveTodo(Constant.username));
         rv_todo.setAdapter(adapter);
     }
 
@@ -152,6 +193,7 @@ public class MainActivity extends BaseActivity {
             ClassifyDialog dialog=new ClassifyDialog(MainActivity.this);
             dialog.show();
         });
+
     }
 
     @Override
