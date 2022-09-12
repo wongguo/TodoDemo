@@ -7,20 +7,22 @@ public class TodoBean{
     private String content;
     private String classify;
     private String date;
+    // 增加时间
+    private String id;
 
-    public TodoBean(String username, String title, String content, String classify, String date) {
+    private String isDone;
+
+
+
+
+
+    public TodoBean(String username, String title, String classify, String date,String id,String isDone) {
         this.username = username;
         this.title = title;
-        this.content = content;
         this.classify = classify;
         this.date = date;
-    }
-
-    public TodoBean(String username, String title, String classify, String date) {
-        this.username = username;
-        this.title = title;
-        this.classify = classify;
-        this.date = date;
+        this.id = id;
+        this.isDone = isDone;
     }
 
     public String getContent() {
@@ -43,4 +45,11 @@ public class TodoBean{
         return date;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getIsDone() {
+        return isDone;
+    }
 }

@@ -41,7 +41,7 @@ public class CRUD {
      */
     @SuppressLint("Range")
     public boolean isExist(String userName,String password){
-        Cursor cursor = db.query(name,new String[]{"username","password"},"username=? and password",new String[]{userName,password},
+        Cursor cursor = db.query(name,new String[]{"username","password"},"username=? and password=?",new String[]{userName,password},
                 null,null,null);
         if (cursor.moveToNext()){
             // 检测到账号存在
@@ -111,15 +111,18 @@ public class CRUD {
      * 返回账号所属所有Todo集合
      */
     @SuppressLint("Range")
-    public List<TodoBean> RetrieveTodo(String username){
+    public List<TodoBean> RetrieveTodo(String username,boolean isDone){
         List<TodoBean> todoBeans = new ArrayList<>();
-        Cursor cursor = db.query(name,null,"username=?",new String[]{username},
+        // 按用户的名字返回相关todo
+        Cursor cursor = db.query(name,null,"username=? and isDone=?",new String[]{username,String.valueOf(isDone)},
                 null,null,"date DESC");
         while (cursor.moveToNext()){
             todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
                     cursor.getString(cursor.getColumnIndex("title")),
                     cursor.getString(cursor.getColumnIndex("classify")),
-                    DateUtils.longToDate(cursor.getLong(cursor.getColumnIndex("date")))));
+                    DateUtils.longToDate(cursor.getLong(cursor.getColumnIndex("date"))),
+                    cursor.getString(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("isDone"))));
         }
         cursor.close();
         return todoBeans;
@@ -146,13 +149,13 @@ public class CRUD {
      * 必须本人才能更新相关Todo
      * 根据日期修改Todo
      */
-    public void UpdateTodo(ContentValues values,String time){
-        db.update(name,values,"time = ?",new String[]{time});
+    public void UpdateTodo(ContentValues values,String id){
+        db.update(name,values,"id = ?",new String[]{id});
     }
 
     // 必须是本人才能删除
-    public void DeleteTodo(String title){
+    public void DeleteTodo(String id){
         // 此处需对当前账户和TOdo账户进行一个遍历对等操作
-        db.delete(name,"time = ?",new String[]{title});
+        db.delete(name,"id = ?",new String[]{id});
     }
 }

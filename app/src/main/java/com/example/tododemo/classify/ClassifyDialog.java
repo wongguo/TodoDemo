@@ -40,12 +40,11 @@ public class ClassifyDialog extends BaseDialog {
     protected void initView() {
         rv_classify = findViewById(R.id.rv_classify);
         mb_cancel_classify = findViewById(R.id.mb_cancel_classify);
-
         initRecyclerView();
     }
 
     private void initRecyclerView() {
-        List<TodoBean> data =new CRUD(context,Constant.TODO_TABLE_NAME).RetrieveTodo(Constant.username);
+        List<TodoBean> data =new CRUD(context,Constant.TODO_TABLE_NAME).RetrieveTodo(Constant.username,Constant.TODO_State);
         List<String> list=new ArrayList<>();
         list.add("默认");
         for(TodoBean bean:data){

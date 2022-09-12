@@ -62,6 +62,8 @@ public class TodoDialog extends BaseDialog {
         select_time=MaterialDatePicker.todayInUtcMilliseconds();
         ti_et_time.setText(DateUtils.longToDate(select_time));
         picker = builder.build();
+
+
     }
 
     @Override
