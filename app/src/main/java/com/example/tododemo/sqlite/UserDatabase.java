@@ -22,9 +22,9 @@ public class UserDatabase extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(account);
         //todo表
         String todoList="create table "+Constant.TODO_TABLE_NAME+
-                "(username text,"+
+                "(id integer primary key autoincrement," +
+                "username text,"+
                 "title text,"+
-                "content text,"+
                 "classify text,"+
                 "date Integer,"+
                 "isDone text)";
