@@ -7,16 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.example.tododemo.bean.TodoBean;
-import com.example.tododemo.dialog.BaseDialog;
 import com.example.tododemo.R;
+import com.example.tododemo.dialog.BaseDialog;
 import com.example.tododemo.sqlite.CRUD;
 import com.example.tododemo.sqlite.Constant;
 import com.google.android.material.button.MaterialButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClassifyDialog extends BaseDialog {
@@ -44,18 +40,15 @@ public class ClassifyDialog extends BaseDialog {
     }
 
     private void initRecyclerView() {
-        List<TodoBean> data =new CRUD(context,Constant.TODO_TABLE_NAME).RetrieveTodo(Constant.username,Constant.TODO_State);
-        List<String> list=new ArrayList<>();
-        list.add("默认");
-        for(TodoBean bean:data){
-            String classify=bean.getClassify();
-            if(!list.contains(classify)) list.add(classify);
-        }
+        List<String> list =new CRUD(context,Constant.TODO_TABLE_NAME).RetrieveTodoClassify(Constant.username);
         rv_classify.setLayoutManager(new LinearLayoutManager(context));
         ClassifyDialogAdapter adapter=new ClassifyDialogAdapter(list);
         rv_classify.setAdapter(adapter);
+        // 分类item点击事件
         adapter.setOnItemClickListener((adapter1, view, position) -> {
-
+            if (onItemClickListener!=null){
+                onItemClickListener.OnItemClickListener(view,position,list);
+            }
         });
     }
 
@@ -63,4 +56,15 @@ public class ClassifyDialog extends BaseDialog {
     protected void initListener() {
         mb_cancel_classify.setOnClickListener(view -> dismiss());
     }
+
+    public interface OnItemClickListener{
+        // 1.点击view 2.列表位置 3.列表
+        void OnItemClickListener(View view,int position,List<String> list);
+    }
+    private OnItemClickListener onItemClickListener;
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener;
+    }
+
+
 }

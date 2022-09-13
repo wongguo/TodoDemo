@@ -108,13 +108,13 @@ public class CRUD {
     //Todo处理
 
     /**
-     * 返回账号所属所有Todo集合
+     * 返回账号所属所有Todo集合,根据完成和未完成的todo返回
      */
     @SuppressLint("Range")
-    public List<TodoBean> RetrieveTodo(String username,boolean isDone){
+    public List<TodoBean> RetrieveTodo(String username,boolean isDone,String classify){
         List<TodoBean> todoBeans = new ArrayList<>();
         // 按用户的名字返回相关todo
-        Cursor cursor = db.query(name,null,"username=? and isDone=?",new String[]{username,String.valueOf(isDone)},
+        Cursor cursor = db.query(name,null,"username=? and isDone=? and classify=?",new String[]{username,String.valueOf(isDone),classify},
                 null,null,"date DESC");
         while (cursor.moveToNext()){
             todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
@@ -126,6 +126,25 @@ public class CRUD {
         }
         cursor.close();
         return todoBeans;
+    }
+
+    /**
+     * 获取todo分类
+     */
+    @SuppressLint("Range")
+    public List<String> RetrieveTodoClassify(String username){
+        List<String> classifyList = new ArrayList<>();
+        classifyList.add(Constant.classify);
+        // 按用户的名字返回相关todo
+        Cursor cursor = db.query(name,null,"username=? ",new String[]{username},
+                null,null,"date DESC");
+        while (cursor.moveToNext()){
+            String classify = cursor.getString(cursor.getColumnIndex("classify"));
+            if (!classifyList.contains(classify))classifyList.add(classify);
+
+        }
+        cursor.close();
+        return classifyList;
     }
 
     /**

@@ -20,12 +20,15 @@
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/item_day.xml" value="0.24322916666666666" />
         <entry key="..\:/Android/demos/TodoDemo/app/src/main/res/layout/item_todo.xml" value="0.20168066580377575" />
         <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/layout/activity_account.xml" value="0.152" />
-        <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/layout/activity_main.xml" value="0.136" />
+        <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/layout/activity_main.xml" value="0.4686234817813765" />
         <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/layout/activity_result.xml" value="0.2210144927536232" />
         <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/layout/dialog_add.xml" value="0.2210144927536232" />
+        <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/layout/dialog_classify.xml" value="0.12604166666666666" />
         <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/layout/fragment_login.xml" value="0.2210144927536232" />
         <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/layout/fragment_register.xml" value="0.2210144927536232" />
+        <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/layout/fragment_search.xml" value="0.2520833333333333" />
         <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/layout/item_todo.xml" value="0.2" />
+        <entry key="..\:/AndroidTest/TodoDemo-master/TodoDemo-master/app/src/main/res/menu/todo_delete.xml" value="0.1703125" />
       </map>
     </option>
   </component>
