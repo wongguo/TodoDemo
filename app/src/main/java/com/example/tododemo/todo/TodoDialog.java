@@ -52,6 +52,7 @@ public class TodoDialog extends BaseDialog {
         //初始化日期选择器
         initDatePicker();
     }
+
     // 编辑--获取该item的bean参数
     public void initSetDate(TodoBean bean){
         mtb_add.setTitle("修改代办");
@@ -71,6 +72,7 @@ public class TodoDialog extends BaseDialog {
         picker = builder.build();
         mb_add.setText("修改");
     }
+
     private void initDatePicker() {
         MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
         //设置MaterialDatePicker初始选中今天
@@ -81,8 +83,6 @@ public class TodoDialog extends BaseDialog {
         select_time=MaterialDatePicker.todayInUtcMilliseconds();
         ti_et_time.setText(DateUtils.longToDate(select_time));
         picker = builder.build();
-
-
     }
 
     @Override

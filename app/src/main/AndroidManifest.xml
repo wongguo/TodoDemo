@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".account.AccountActivity"/>
+        <activity android:name=".search.ResultActivity"/>
     </application>
 
 </manifest>

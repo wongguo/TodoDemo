@@ -47,7 +47,7 @@ public class ClassifyDialog extends BaseDialog {
         // 分类item点击事件
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             if (onItemClickListener!=null){
-                onItemClickListener.OnItemClickListener(view,position,list);
+                onItemClickListener.OnClassifyItemClickListener(position,list);
             }
         });
     }
@@ -59,7 +59,7 @@ public class ClassifyDialog extends BaseDialog {
 
     public interface OnItemClickListener{
         // 1.点击view 2.列表位置 3.列表
-        void OnItemClickListener(View view,int position,List<String> list);
+        void OnClassifyItemClickListener(int position, List<String> list);
     }
     private OnItemClickListener onItemClickListener;
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){

@@ -17,7 +17,7 @@ public class Constant {
 
 
     // 0在数据库表示false 1表示true
-    public static boolean TODO_State = false;
+    public static boolean TODO_STATE = false;
 
-    public static String classify = "默认";
+    public static String CLASSIFY = "全部";
 }

@@ -3,8 +3,11 @@ package com.example.tododemo;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -13,17 +16,15 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemLongClickListener;
 import com.example.tododemo.account.AccountActivity;
 import com.example.tododemo.account.UserDialog;
 import com.example.tododemo.bean.TodoBean;
 import com.example.tododemo.bean.UserBean;
 import com.example.tododemo.classify.ClassifyDialog;
 import com.example.tododemo.dialog.NormalDialog;
+import com.example.tododemo.search.ResultActivity;
 import com.example.tododemo.sqlite.CRUD;
 import com.example.tododemo.sqlite.Constant;
-import com.example.tododemo.sqlite.DateUtils;
 import com.example.tododemo.todo.TodoAdapter;
 import com.example.tododemo.todo.TodoDialog;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -34,7 +35,6 @@ import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.List;
-
 public class MainActivity extends BaseActivity {
 
     private MaterialToolbar mtb_main;
@@ -46,25 +46,27 @@ public class MainActivity extends BaseActivity {
     private MaterialRadioButton radio_finish;
     private RecyclerView rv_todo;
     private List<TodoBean> beanList;
+    private TodoAdapter adapter;
+    private CRUD crud;
+    private FloatingActionButton fab_delete;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initSQL();
-        initRecyclerView(Constant.TODO_State,Constant.classify);
+        initRecyclerView(Constant.TODO_STATE,Constant.CLASSIFY);
     }
 
     private void initRecyclerView(boolean isDone,String classification) {
-        mtv_classify.setText("分类："+Constant.classify);
+        mtv_classify.setText(Constant.CLASSIFY);
         rv_todo.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        beanList = new CRUD(MainActivity.this, Constant.TODO_TABLE_NAME).RetrieveTodo(Constant.username, Constant.TODO_State, classification);
-        TodoAdapter adapter1 = new TodoAdapter(beanList, this, isDone);
-        rv_todo.setAdapter(adapter1);
-
+        beanList = crud.RetrieveTodo(Constant.username, Constant.TODO_STATE, classification);
+        adapter = new TodoAdapter(beanList);
+        rv_todo.setAdapter(adapter);
 
         // todo点击事件监听  ->进行编辑修改内容
-        adapter1.setOnItemClickListener((adapter, view, position) -> {
+        adapter.setOnItemClickListener((adapter1, view, position) -> {
             TodoDialog todoDialog = new TodoDialog(MainActivity.this,getSupportFragmentManager());
             todoDialog.show();
             TodoBean bean = beanList.get(position);
@@ -74,47 +76,58 @@ public class MainActivity extends BaseActivity {
                     Toast.makeText(MainActivity.this, "待办事项不为空", Toast.LENGTH_SHORT).show();
                 } else {
                     //插入todo数据
-                    CRUD crud=new CRUD(MainActivity.this, Constant.TODO_TABLE_NAME);
                     ContentValues values=new ContentValues();
                     values.put("username",Constant.username);
                     values.put("title",title);
                     values.put("classify",classify);
                     values.put("date",time);
-                    values.put("isDone",String.valueOf(Constant.TODO_State));
+                    values.put("isDone",String.valueOf(Constant.TODO_STATE));
                     crud.UpdateTodo(values,beanList.get(position).getId());
                     values.clear();
                     Toast.makeText(MainActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
                     todoDialog.dismiss();
-                    initRecyclerView(Constant.TODO_State,Constant.classify);
+                    initRecyclerView(Constant.TODO_STATE,Constant.CLASSIFY);
                 }
             });
         });
-        adapter1.setOnItemLongClickListener(new OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
-                // 获取布局文件
-                popupMenu.getMenuInflater().inflate(R.menu.todo_delete, popupMenu.getMenu());
-                popupMenu.show();
-                // 通过上面这几行代码，就可以把控件显示出来了
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override public boolean onMenuItemClick(MenuItem item) {
-                        // 控件每一个item的点击事件
-                        switch (item.getItemId()){
-                            case R.id.todo_delete:
-                                CRUD crud=new CRUD(MainActivity.this, Constant.TODO_TABLE_NAME);
-                                crud.DeleteTodo(beanList.get(position).getId());
-                                Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
-                                initRecyclerView(Constant.TODO_State,Constant.classify);
-                                break;
-                            case R.id.todo_batchRemove:
-                                Toast.makeText(MainActivity.this,"批量删除",Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                        return true;
-                    }
-                });
+
+        //item长按开启popupmenu
+        adapter.setOnItemLongClickListener((adapter1, view, position) -> {
+            PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
+            // 获取布局文件
+            popupMenu.getMenuInflater().inflate(R.menu.todo_delete, popupMenu.getMenu());
+            popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(item -> {
+                // 控件每一个item的点击事件
+                switch (item.getItemId()){
+                    case R.id.todo_delete:
+                        crud.DeleteTodo(beanList.get(position).getId());
+                        Toast.makeText(MainActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                        initRecyclerView(Constant.TODO_STATE,Constant.CLASSIFY);
+                        break;
+                    case R.id.todo_more:
+                        fab_delete.setVisibility(View.VISIBLE);
+                        fab_add.setBackground(getDrawable(R.drawable.ic_baseline_close_24));
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + item.getItemId());
+                }
                 return true;
+            });
+            return true;
+        });
+
+        //checkbox选中
+        adapter.addChildClickViewIds(R.id.cb_todo);
+        adapter.setOnItemChildClickListener((adapter1, view, position) -> {
+            if(view.getId()==R.id.cb_todo) {
+                CheckBox checkBox = findViewById(R.id.cb_todo);
+                ContentValues values=new ContentValues();
+                values.put("isDone",String.valueOf(checkBox.isChecked()));
+                TodoBean bean=beanList.get(position);
+                crud.UpdateTodo(values,bean.getId());
+                adapter.remove(bean);
+                values.clear();
             }
         });
 
@@ -133,11 +146,13 @@ public class MainActivity extends BaseActivity {
         mtb_main = findViewById(R.id.mtb_main);
         mb_search = findViewById(R.id.mb_search);
         fab_add = findViewById(R.id.fab_add);
+        fab_delete = findViewById(R.id.fab_delete);
         efab_account = findViewById(R.id.efab_account);
         mtv_classify = findViewById(R.id.mtv_classify);
         radio_plan = findViewById(R.id.radio_plan);
         radio_finish = findViewById(R.id.radio_finish);
         rv_todo = findViewById(R.id.rv_todo);
+        crud=new CRUD(MainActivity.this,Constant.TODO_TABLE_NAME);
     }
 
 
@@ -181,6 +196,9 @@ public class MainActivity extends BaseActivity {
             dialog.setItemOnClickListener(new NormalDialog.ItemOnClickListener() {
                 @Override
                 public void onPositiveClick() {
+                    Intent intent=new Intent(MainActivity.this, ResultActivity.class);
+                    intent.putExtra("search",dialog.getEditTextContent());
+                    startActivity(intent);
                     dialog.dismiss();
                 }
 
@@ -202,7 +220,6 @@ public class MainActivity extends BaseActivity {
                 }else {
                     if (classify.isEmpty()) classify="默认";
                     //插入todo数据
-                    CRUD crud=new CRUD(MainActivity.this, Constant.TODO_TABLE_NAME);
                     ContentValues values=new ContentValues();
                     values.put("username",Constant.username);
                     values.put("title",title);
@@ -213,45 +230,42 @@ public class MainActivity extends BaseActivity {
                     values.clear();
                     Toast.makeText(MainActivity.this, "添加成功", Toast.LENGTH_SHORT).show();
                     todoDialog.dismiss();
-                    initRecyclerView(Constant.TODO_State,Constant.classify);
+                    initRecyclerView(Constant.TODO_STATE,Constant.CLASSIFY);
                 }
             });
         });
 
-
-        ClassifyDialog dialog = new ClassifyDialog(MainActivity.this);
         //分类查看
         mtv_classify.setOnClickListener(view -> {
+            ClassifyDialog dialog = new ClassifyDialog(MainActivity.this);
             dialog.show();
-        });
-
-        // 分类项点击事件
-        dialog.setOnItemClickListener((view, position, list) -> {
-           Constant.classify = list.get(position);
-           initRecyclerView(Constant.TODO_State,Constant.classify);
-           dialog.dismiss();
+            // 分类项点击事件
+            dialog.setOnItemClickListener((position, list) -> {
+                Constant.CLASSIFY = list.get(position);
+                initRecyclerView(Constant.TODO_STATE,Constant.CLASSIFY);
+                dialog.dismiss();
+            });
         });
 
         // 计划todo页面切换
         radio_plan.setOnClickListener(v -> {
-            Constant.TODO_State = false;
-            initRecyclerView(Constant.TODO_State,Constant.classify);
+            Constant.TODO_STATE = false;
+            initRecyclerView(Constant.TODO_STATE,Constant.CLASSIFY);
         });
+
         // 已完成todo页面切换
         radio_finish.setOnClickListener(v -> {
-            Constant.TODO_State = true;
-            initRecyclerView(Constant.TODO_State,Constant.classify);
+            Constant.TODO_STATE = true;
+            initRecyclerView(Constant.TODO_STATE,Constant.CLASSIFY);
         });
 
-
     }
-
-
 
     @Override
     protected void onResume() {
         super.onResume();
         efab_account.setText(Constant.username);
+        initRecyclerView(Constant.TODO_STATE,Constant.CLASSIFY);
     }
 
     /**
@@ -261,6 +275,6 @@ public class MainActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
         // 满足登陆后显示该账号相关的todo
-        initRecyclerView(Constant.TODO_State,Constant.classify);
+        //initRecyclerView(Constant.TODO_STATE,Constant.CLASSIFY);
     }
 }

@@ -26,7 +26,6 @@
     <string name="add">添加</string>
     <string name="title">待办事项</string>
     <string name="delete">删除</string>
-
     <string name="classification">待办分类</string>
     <string name="time">选择完成时间</string>
 
@@ -44,5 +43,9 @@
     <!--dialog-->
     <string name="cancel">取消</string>
     <string name="confirm">确认</string>
+
+    <!--popupmenu-->
+    <string name="pop_delete">删除该项</string>
+    <string name="pop_more">多选</string>
 
 </resources>

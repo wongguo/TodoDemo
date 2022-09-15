@@ -9,10 +9,7 @@ public class TodoBean{
     private String date;
     // 增加时间
     private String id;
-
-    private String isDone;
-
-
+    private boolean isDone;
 
 
 
@@ -22,7 +19,7 @@ public class TodoBean{
         this.classify = classify;
         this.date = date;
         this.id = id;
-        this.isDone = isDone;
+        this.isDone = isDone.equals("true");
     }
 
     public String getContent() {
@@ -49,7 +46,7 @@ public class TodoBean{
         return id;
     }
 
-    public String getIsDone() {
+    public boolean getIsDone() {
         return isDone;
     }
 }

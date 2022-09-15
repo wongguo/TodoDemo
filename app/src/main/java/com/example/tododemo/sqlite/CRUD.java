@@ -112,9 +112,28 @@ public class CRUD {
      */
     @SuppressLint("Range")
     public List<TodoBean> RetrieveTodo(String username,boolean isDone,String classify){
+        if(classify.equals("全部")) return RetrieveAllTodo(username,isDone);
         List<TodoBean> todoBeans = new ArrayList<>();
         // 按用户的名字返回相关todo
         Cursor cursor = db.query(name,null,"username=? and isDone=? and classify=?",new String[]{username,String.valueOf(isDone),classify},
+                null,null,"date DESC");
+        while (cursor.moveToNext()){
+            todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
+                    cursor.getString(cursor.getColumnIndex("title")),
+                    cursor.getString(cursor.getColumnIndex("classify")),
+                    DateUtils.longToDate(cursor.getLong(cursor.getColumnIndex("date"))),
+                    cursor.getString(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("isDone"))));
+        }
+        cursor.close();
+        return todoBeans;
+    }
+
+    @SuppressLint("Range")
+    public List<TodoBean> RetrieveAllTodo(String username,boolean isDone){
+        List<TodoBean> todoBeans = new ArrayList<>();
+        // 按用户的名字返回相关todo
+        Cursor cursor = db.query(name,null,"username=? and isDone=? ",new String[]{username,String.valueOf(isDone)},
                 null,null,"date DESC");
         while (cursor.moveToNext()){
             todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
@@ -134,35 +153,18 @@ public class CRUD {
     @SuppressLint("Range")
     public List<String> RetrieveTodoClassify(String username){
         List<String> classifyList = new ArrayList<>();
-        classifyList.add(Constant.classify);
+        classifyList.add("全部");
         // 按用户的名字返回相关todo
         Cursor cursor = db.query(name,null,"username=? ",new String[]{username},
-                null,null,"date DESC");
+                null,null,null);
         while (cursor.moveToNext()){
             String classify = cursor.getString(cursor.getColumnIndex("classify"));
             if (!classifyList.contains(classify))classifyList.add(classify);
-
         }
         cursor.close();
         return classifyList;
     }
 
-    /**
-     * 获取登录账号的todo时间列表
-     * @return List<String>
-     */
-    @SuppressLint("Range")
-    public List<String> getTodoDateList() {
-        List<String> todoDateList=new ArrayList<>();
-        Cursor cursor = db.query(name,null,"username=?",new String[]{Constant.username},
-                null,null,"date DESC");
-        while (cursor.moveToNext()){
-            String date=DateUtils.longToDate(cursor.getLong(cursor.getColumnIndex("date")));
-            if(!todoDateList.contains(date)) todoDateList.add(date);
-        }
-        cursor.close();
-        return todoDateList;
-    }
 
     /**
      * 必须本人才能更新相关Todo
@@ -174,7 +176,28 @@ public class CRUD {
 
     // 必须是本人才能删除
     public void DeleteTodo(String id){
-        // 此处需对当前账户和TOdo账户进行一个遍历对等操作
+        // 此处需对当前账户和Todo账户进行一个遍历对等操作
         db.delete(name,"id = ?",new String[]{id});
+    }
+
+    /**
+     * @param search 模糊搜索内容
+     * @return 搜索相关的todoList
+     */
+    @SuppressLint("Range")
+    public List<TodoBean> SearchTodo(String search){
+        List<TodoBean> todoBeans = new ArrayList<>();
+        Cursor cursor=db.query(name,null,"title LIKE ?",new String[]{"%"+search+"%"},
+                null,null,null);
+        while (cursor.moveToNext()){
+            todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
+                    cursor.getString(cursor.getColumnIndex("title")),
+                    cursor.getString(cursor.getColumnIndex("classify")),
+                    DateUtils.longToDate(cursor.getLong(cursor.getColumnIndex("date"))),
+                    cursor.getString(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("isDone"))));
+        }
+        cursor.close();
+        return todoBeans;
     }
 }
