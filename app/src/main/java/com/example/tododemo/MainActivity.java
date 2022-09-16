@@ -212,7 +212,12 @@ public class MainActivity extends BaseActivity {
             if (Constant.isLogin) {
                 UserDialog dialog = new UserDialog(MainActivity.this);
                 dialog.show();
-                dialog.setOnDismissListener(dialogInterface -> efab_account.setText(Constant.username));
+                // 弹窗消失的监听事件
+                dialog.setOnDismissListener(dialog1 -> {
+                    efab_account.setText(Constant.username);
+                    initRecyclerView(Constant.CLASSIFY);
+                });
+
             }
             //如果未登录
             else {

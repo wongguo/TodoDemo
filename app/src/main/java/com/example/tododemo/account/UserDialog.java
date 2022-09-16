@@ -150,6 +150,7 @@ public class UserDialog extends BaseDialog {
                 public void onPositiveClick() {
                     Toast.makeText(context, "注销成功", Toast.LENGTH_SHORT).show();
                     crud.DeleteUser(Constant.username);
+                    new CRUD(context,Constant.TODO_TABLE_NAME).DeleteTodosByUser(Constant.username);
                     initAccount(normalDialog);
                 }
 

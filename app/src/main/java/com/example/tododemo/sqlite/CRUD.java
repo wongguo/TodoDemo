@@ -187,7 +187,10 @@ public class CRUD {
         }
         //db.delete(name, String.format("id in (%s)", ListToStrings(idsList)), idsList.toArray(new String[0]));
     }
+    public void DeleteTodosByUser(String userName){
+        db.delete(name,"username = ?",new String[]{userName});
 
+    }
     private String ListToStrings(List<String> list){
         StringBuilder sb=new StringBuilder();
         for(String id:list){
