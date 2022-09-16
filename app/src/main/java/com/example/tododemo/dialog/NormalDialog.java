@@ -95,6 +95,7 @@ public class NormalDialog extends BaseDialog {
     }
 
     public String getEditTextContent(){
+        // 检查指定的对象引用是否为空。
         return Objects.requireNonNull(til_init.getEditText()).getText().toString();
     }
 }

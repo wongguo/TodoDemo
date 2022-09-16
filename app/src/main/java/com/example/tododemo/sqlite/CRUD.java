@@ -202,9 +202,10 @@ public class CRUD {
      * @return 搜索相关的todoList
      */
     @SuppressLint("Range")
-    public List<TodoBean> SearchTodo(String search){
+    public List<TodoBean> SearchTodo(String search,String userNmae){
         List<TodoBean> todoBeans = new ArrayList<>();
-        Cursor cursor=db.query(name,null,"title LIKE ?",new String[]{"%"+search+"%"},
+        // 模糊搜索
+        Cursor cursor = db.query(name,null,"title LIKE ?and username=?",new String[]{"%"+search+"%",userNmae},
                 null,null,null);
         while (cursor.moveToNext()){
             todoBeans.add(new TodoBean(cursor.getInt(cursor.getColumnIndex("id")),

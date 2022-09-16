@@ -48,8 +48,8 @@ public class MainActivity extends BaseActivity {
     private TodoAdapter adapter;
     private CRUD crud;
     private FloatingActionButton fab_delete;
-    private int SELECT_MOD = 0;
-    private final List<String> delete_ids = new ArrayList<>();
+    private int SELECT_MOD = 0; // 选择模式 0为普通模式，1为多选删除模式
+    private final List<String> delete_ids = new ArrayList<>(); // 存储多选删除的todo id
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -108,10 +108,14 @@ public class MainActivity extends BaseActivity {
                 }
                 //多选模式下选则删除项
                 else if (SELECT_MOD == 1) {
+                    // 获取点击item的id
                     int id = beanList.get(position).getId();
+                    // 如果颜色是白色，即从未选中->选中
                     if (view.getBackground().getConstantState() == ContextCompat.getDrawable(this, R.color.white).getConstantState()) {
+                        // 将item变成选中颜色
                         view.setBackground(ContextCompat.getDrawable(this, R.color.gray));
                         System.out.println(id);
+                        // 往id集合添加此item的id
                         delete_ids.add(String.valueOf(id));
                     } else {
                         view.setBackground(ContextCompat.getDrawable(this, R.color.white));
@@ -122,8 +126,11 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+        // item的卡片布局，设置长按事件
         adapter.addChildLongClickViewIds(R.id.cv_todo);
+        // 长按监听事件
         adapter.setOnItemChildLongClickListener((adapter, view, position) -> {
+            // 点击view为cardView的id且模式为0->唤出弹窗
             if (view.getId() == R.id.cv_todo && SELECT_MOD == 0) {
                 PopupMenu popupMenu = new PopupMenu(MainActivity.this, view);
                 // 获取布局文件
@@ -133,16 +140,22 @@ public class MainActivity extends BaseActivity {
                     // 控件每一个item的点击事件
                     switch (item.getItemId()) {
                         case R.id.todo_delete:
+                            // 获取点击item的id，根据此id进行删除
                             crud.DeleteTodo(beanList.get(position).getId());
                             Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                            // 更新列表
                             initRecyclerView(Constant.CLASSIFY);
                             break;
                         case R.id.todo_more:
+                            // 显示多选删除的悬浮按钮
                             fab_delete.setVisibility(View.VISIBLE);
+                            // 同时将添加todo按钮的图像加载成取消样式
                             fab_add.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_baseline_close_24));
+                            // 改变删除模式为多选状态
                             SELECT_MOD = 1;
                             break;
                         default:
+                            // 其他按钮进行异常报错
                             throw new IllegalStateException("Unexpected value: " + item.getItemId());
                     }
                     return true;
@@ -218,6 +231,7 @@ public class MainActivity extends BaseActivity {
                 public void onPositiveClick() {
                     Intent intent = new Intent(MainActivity.this, ResultActivity.class);
                     intent.putExtra("search", dialog.getEditTextContent());
+                    intent.putExtra("userName",Constant.username);
                     startActivity(intent);
                     dialog.dismiss();
                 }
@@ -258,6 +272,7 @@ public class MainActivity extends BaseActivity {
             }
             //多选删除模式
             else if (SELECT_MOD == 1) {
+                // 隐藏
                 fab_delete.setVisibility(View.GONE);
                 fab_add.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_baseline_add_24));
                 SELECT_MOD = 0;
@@ -265,7 +280,7 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        //删除选中todos
+        // 删除选中todos
         fab_delete.setOnClickListener(view -> {
             String title = "删除全部";
             String content = "请问是否删除选中todo";

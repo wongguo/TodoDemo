@@ -32,13 +32,14 @@ public class ResultActivity extends BaseActivity {
 
     private RecyclerView rv_result;
     private String search;
+    private String userName;
     private CRUD crud;
     private MaterialToolbar mtb_result;
 
 
     private void initRecyclerView() {
         rv_result.setLayoutManager(new LinearLayoutManager(ResultActivity.this));
-        List<TodoBean> list=new CRUD(this, Constant.TODO_TABLE_NAME).SearchTodo(search);
+        List<TodoBean> list=new CRUD(this, Constant.TODO_TABLE_NAME).SearchTodo(search,userName);
         TodoAdapter adapter=new TodoAdapter(list,this);
         rv_result.setAdapter(adapter);
         //单击编辑
@@ -112,6 +113,7 @@ public class ResultActivity extends BaseActivity {
         mtb_result = findViewById(R.id.mtb_result);
         rv_result = findViewById(R.id.rv_result);
         search = getIntent().getStringExtra("search");
+        userName = getIntent().getStringExtra("userName");
         crud = new CRUD(this,Constant.TODO_TABLE_NAME);
         initRecyclerView();
     }
