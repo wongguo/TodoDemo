@@ -118,11 +118,11 @@ public class CRUD {
         Cursor cursor = db.query(name,null,"username=? and isDone=? and classify=?",new String[]{username,String.valueOf(isDone),classify},
                 null,null,"date DESC");
         while (cursor.moveToNext()){
-            todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
+            todoBeans.add(new TodoBean(cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("username")),
                     cursor.getString(cursor.getColumnIndex("title")),
                     cursor.getString(cursor.getColumnIndex("classify")),
                     DateUtils.longToDate(cursor.getLong(cursor.getColumnIndex("date"))),
-                    cursor.getString(cursor.getColumnIndex("id")),
                     cursor.getString(cursor.getColumnIndex("isDone"))));
         }
         cursor.close();
@@ -136,11 +136,11 @@ public class CRUD {
         Cursor cursor = db.query(name,null,"username=? and isDone=? ",new String[]{username,String.valueOf(isDone)},
                 null,null,"date DESC");
         while (cursor.moveToNext()){
-            todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
+            todoBeans.add(new TodoBean(cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("username")),
                     cursor.getString(cursor.getColumnIndex("title")),
                     cursor.getString(cursor.getColumnIndex("classify")),
                     DateUtils.longToDate(cursor.getLong(cursor.getColumnIndex("date"))),
-                    cursor.getString(cursor.getColumnIndex("id")),
                     cursor.getString(cursor.getColumnIndex("isDone"))));
         }
         cursor.close();
@@ -170,15 +170,32 @@ public class CRUD {
      * 必须本人才能更新相关Todo
      * 根据日期修改Todo
      */
-    public void UpdateTodo(ContentValues values,String id){
-        db.update(name,values,"id = ?",new String[]{id});
+    public void UpdateTodo(ContentValues values,int id){
+        db.update(name,values,"id = ?",new String[]{String.valueOf(id)});
     }
 
-    // 必须是本人才能删除
-    public void DeleteTodo(String id){
+    // 删除单条todo
+    public void DeleteTodo(int id){
         // 此处需对当前账户和Todo账户进行一个遍历对等操作
-        db.delete(name,"id = ?",new String[]{id});
+        db.delete(name,"id = ?",new String[]{String.valueOf(id)});
     }
+
+    //删除多条todo
+    public void DeleteTodos(List<String> idsList){
+        for(String id:idsList){
+            db.delete(name,"id=?",new String[]{id});
+        }
+        //db.delete(name, String.format("id in (%s)", ListToStrings(idsList)), idsList.toArray(new String[0]));
+    }
+
+    private String ListToStrings(List<String> list){
+        StringBuilder sb=new StringBuilder();
+        for(String id:list){
+            sb.append(id).append(",");
+        }
+        return sb.deleteCharAt(sb.length()-1).toString();
+    }
+
 
     /**
      * @param search 模糊搜索内容
@@ -190,11 +207,11 @@ public class CRUD {
         Cursor cursor=db.query(name,null,"title LIKE ?",new String[]{"%"+search+"%"},
                 null,null,null);
         while (cursor.moveToNext()){
-            todoBeans.add(new TodoBean(cursor.getString(cursor.getColumnIndex("username")),
+            todoBeans.add(new TodoBean(cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("username")),
                     cursor.getString(cursor.getColumnIndex("title")),
                     cursor.getString(cursor.getColumnIndex("classify")),
                     DateUtils.longToDate(cursor.getLong(cursor.getColumnIndex("date"))),
-                    cursor.getString(cursor.getColumnIndex("id")),
                     cursor.getString(cursor.getColumnIndex("isDone"))));
         }
         cursor.close();

@@ -2,23 +2,22 @@ package com.example.tododemo.bean;
 
 
 public class TodoBean{
+    private int id;
     private String username;
     private String title;
     private String content;
     private String classify;
     private String date;
-    // 增加时间
-    private String id;
     private boolean isDone;
 
 
 
-    public TodoBean(String username, String title, String classify, String date,String id,String isDone) {
+    public TodoBean(int id,String username, String title, String classify, String date,String isDone) {
+        this.id = id;
         this.username = username;
         this.title = title;
         this.classify = classify;
         this.date = date;
-        this.id = id;
         this.isDone = isDone.equals("true");
     }
 
@@ -42,7 +41,7 @@ public class TodoBean{
         return date;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

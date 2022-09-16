@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.chad.library.adapter.base.listener.OnItemLongClickListener;
 import com.example.tododemo.BaseActivity;
 import com.example.tododemo.MainActivity;
 import com.example.tododemo.R;
 import com.example.tododemo.bean.TodoBean;
+import com.example.tododemo.dialog.NormalDialog;
 import com.example.tododemo.sqlite.CRUD;
 import com.example.tododemo.sqlite.Constant;
 import com.example.tododemo.todo.TodoAdapter;
@@ -37,7 +39,7 @@ public class ResultActivity extends BaseActivity {
     private void initRecyclerView() {
         rv_result.setLayoutManager(new LinearLayoutManager(ResultActivity.this));
         List<TodoBean> list=new CRUD(this, Constant.TODO_TABLE_NAME).SearchTodo(search);
-        TodoAdapter adapter=new TodoAdapter(list);
+        TodoAdapter adapter=new TodoAdapter(list,this);
         rv_result.setAdapter(adapter);
         //单击编辑
         adapter.setOnItemClickListener((adapter1, view, position) -> {
@@ -64,26 +66,26 @@ public class ResultActivity extends BaseActivity {
                 }
             });
         });
-        //长按开启popupmenu
+        //长按删除
         adapter.setOnItemLongClickListener((adapter1, view, position) -> {
-            PopupMenu popupMenu = new PopupMenu(ResultActivity.this, view);
-            // 获取布局文件
-            popupMenu.getMenuInflater().inflate(R.menu.todo_delete, popupMenu.getMenu());
-            popupMenu.show();
-            popupMenu.setOnMenuItemClickListener(item -> {
-                // 控件每一个item的点击事件
-                switch (item.getItemId()){
-                    case R.id.todo_delete:
-                        crud.DeleteTodo(list.get(position).getId());
-                        Toast.makeText(ResultActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
-                        initRecyclerView();
-                        break;
-                    case R.id.todo_more:
-                        Toast.makeText(ResultActivity.this,"批量删除",Toast.LENGTH_SHORT).show();
-                        break;
+            String title="删除";
+            String content="是否要删除该Todo";
+            NormalDialog normalDialog=new NormalDialog(ResultActivity.this,Constant.MESSAGE_DIALOG,title,content);
+            normalDialog.setItemOnClickListener(new NormalDialog.ItemOnClickListener() {
+                @Override
+                public void onPositiveClick() {
+                    crud.DeleteTodo(list.get(position).getId());
+                    Toast.makeText(ResultActivity.this,"删除成功",Toast.LENGTH_SHORT).show();
+                    adapter.remove(list.get(position));
+                    normalDialog.dismiss();
                 }
-                return true;
+
+                @Override
+                public void onNegativeClick() {
+                    normalDialog.dismiss();
+                }
             });
+            normalDialog.show();
             return true;
         });
         //checkbox选中
