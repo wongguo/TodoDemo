@@ -22,9 +22,9 @@
         style="@style/TextInputEditRadius"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
         android:hint="@string/title">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -38,9 +38,9 @@
         style="@style/TextInputEditRadius"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="16dp"
         android:hint="@string/classification">
 
 
@@ -56,9 +56,9 @@
         style="@style/TextInputEditRadius"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="16dp"
         android:hint="@string/time"
         app:endIconDrawable="@drawable/ic_baseline_calendar_today_24"
         app:endIconMode="custom"
@@ -76,10 +76,13 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_add"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="20sp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="20dp"
+        app:cornerRadius="50dp"
         android:backgroundTint="@color/main_color"
         android:text="@string/add"
         android:layout_gravity="center_horizontal"/>

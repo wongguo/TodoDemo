@@ -91,6 +91,7 @@ public class MainActivity extends BaseActivity {
                             Toast.makeText(MainActivity.this, "待办事项不为空", Toast.LENGTH_SHORT).show();
                         } else {
                             //插入todo数据
+                            if (classify.isEmpty()) classify = "默认";
                             ContentValues values = new ContentValues();
                             values.put("username", Constant.username);
                             values.put("title", title);

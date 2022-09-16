@@ -20,4 +20,7 @@ public class Constant {
     public static boolean TODO_STATE = false;
 
     public static String CLASSIFY = "全部";
+
+    public static String LOGIN_TAG="login";
+    public static String REGISTER_TAG="register";
 }

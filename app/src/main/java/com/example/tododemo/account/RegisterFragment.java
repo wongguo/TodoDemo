@@ -10,14 +10,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+
 
 import com.example.tododemo.R;
 import com.example.tododemo.sqlite.CRUD;
 import com.example.tododemo.sqlite.Constant;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Objects;
 
@@ -28,13 +28,23 @@ public class RegisterFragment extends Fragment {
     private TextInputLayout til_reg_password;
     private TextInputLayout til_reg_account;
 
+    private static final String ARG_PARAM1 = "param1";
+    private AccountActivity mActivity;
+
+    public static RegisterFragment newInstance(String param1){
+        RegisterFragment fragment=new RegisterFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mActivity = (AccountActivity) getActivity();
         View view = inflater.inflate(R.layout.fragment_register, container, false);
-
         init(view);
-
         return view;
     }
 
@@ -48,15 +58,16 @@ public class RegisterFragment extends Fragment {
         til_reg_password = view.findViewById(R.id.til_reg_password);
         til_repassword = view.findViewById(R.id.til_repassword);
         mb_register = view.findViewById(R.id.mb_register);
-        //注册跳转登录
-        view.findViewById(R.id.registerToLogin)
-                .setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_registerFragment_to_loginFragment));
+        MaterialTextView registerToLogin = view.findViewById(R.id.registerToLogin);
+        registerToLogin.setOnClickListener(view1 -> mActivity.switchFragment(Constant.REGISTER_TAG,Constant.LOGIN_TAG));
 
-        saveAccount(view);
+        saveAccount();
+
     }
 
+
     //保存账号
-    private void saveAccount(View view) {
+    private void saveAccount() {
         mb_register.setOnClickListener(view1 -> {
             String username = Objects.requireNonNull(til_reg_account.getEditText()).getText().toString();
             String password = Objects.requireNonNull(til_reg_password.getEditText()).getText().toString();
@@ -75,8 +86,7 @@ public class RegisterFragment extends Fragment {
                     new CRUD(getActivity(), Constant.ACCOUNT_TABLE_NAME).add(values);
                     values.clear();
                     //注册跳转登录
-                    NavController controller = Navigation.findNavController(view);
-                    controller.navigate(R.id.action_registerFragment_to_loginFragment);
+                    mActivity.switchFragment("register","login");
                     Toast.makeText(getActivity(), "注册成功，跳转回登录界面", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "该用户已存在", Toast.LENGTH_SHORT).show();

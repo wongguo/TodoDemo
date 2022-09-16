@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="8dp"
+        app:cardCornerRadius="5dp"
         android:background="@color/white">
 
         <RelativeLayout
@@ -39,7 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_toStartOf="@id/mb_todo_classify"
-                android:layout_toEndOf="@id/cb_todo" />
+                android:layout_toEndOf="@id/cb_todo"
+                android:layout_marginBottom="5dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mb_todo_classify"
@@ -54,7 +56,8 @@
                 android:maxEms="5"
                 android:lines="1"
                 android:ellipsize="end"
-                app:cornerRadius="20sp" />
+                app:cornerRadius="20sp"
+                android:clickable="false"/>
         </RelativeLayout>
 
     </com.google.android.material.card.MaterialCardView>

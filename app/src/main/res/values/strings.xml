@@ -32,7 +32,7 @@
     <!--搜索-->
     <string name="tb_search">搜索</string>
     <string name="tb_result">搜索结果</string>
-    
+
     <!--账号功能-->
     <string name="public_account">公共账号</string>
     <string name="change_username">修改用户名</string>
