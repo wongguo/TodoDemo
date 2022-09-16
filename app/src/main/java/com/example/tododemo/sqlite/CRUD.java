@@ -187,10 +187,12 @@ public class CRUD {
         }
         //db.delete(name, String.format("id in (%s)", ListToStrings(idsList)), idsList.toArray(new String[0]));
     }
+    //注销账号清空其Todo
     public void DeleteTodosByUser(String userName){
         db.delete(name,"username = ?",new String[]{userName});
 
     }
+
     private String ListToStrings(List<String> list){
         StringBuilder sb=new StringBuilder();
         for(String id:list){
@@ -205,10 +207,10 @@ public class CRUD {
      * @return 搜索相关的todoList
      */
     @SuppressLint("Range")
-    public List<TodoBean> SearchTodo(String search,String userNmae){
+    public List<TodoBean> SearchTodo(String search,String username){
         List<TodoBean> todoBeans = new ArrayList<>();
         // 模糊搜索
-        Cursor cursor = db.query(name,null,"title LIKE ?and username=?",new String[]{"%"+search+"%",userNmae},
+        Cursor cursor = db.query(name,null,"title LIKE ? and username=?",new String[]{"%"+search+"%",username},
                 null,null,null);
         while (cursor.moveToNext()){
             todoBeans.add(new TodoBean(cursor.getInt(cursor.getColumnIndex("id")),

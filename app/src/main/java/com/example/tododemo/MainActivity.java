@@ -60,7 +60,6 @@ public class MainActivity extends BaseActivity {
         initRecyclerView(Constant.CLASSIFY);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void initRecyclerView(String classification) {
         mtv_classify.setText(Constant.CLASSIFY);
         rv_todo.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -114,12 +113,10 @@ public class MainActivity extends BaseActivity {
                     if (view.getBackground().getConstantState() == ContextCompat.getDrawable(this, R.color.white).getConstantState()) {
                         // 将item变成选中颜色
                         view.setBackground(ContextCompat.getDrawable(this, R.color.gray));
-                        System.out.println(id);
                         // 往id集合添加此item的id
                         delete_ids.add(String.valueOf(id));
                     } else {
                         view.setBackground(ContextCompat.getDrawable(this, R.color.white));
-                        System.out.println(id);
                         //remove为int 类型会判断为索引移除然后溢出，添加（object）强转
                         delete_ids.remove(String.valueOf(id));
                     }
@@ -151,7 +148,7 @@ public class MainActivity extends BaseActivity {
                             fab_delete.setVisibility(View.VISIBLE);
                             // 同时将添加todo按钮的图像加载成取消样式
                             fab_add.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_baseline_close_24));
-                            // 改变删除模式为多选状态
+                            // 变更为多选模式
                             SELECT_MOD = 1;
                             break;
                         default:

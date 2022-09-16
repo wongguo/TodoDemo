@@ -1,8 +1,11 @@
 package com.example.tododemo.classify;
 
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,10 +13,8 @@ import androidx.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.example.tododemo.R;
-import com.example.tododemo.bean.TodoBean;
 import com.google.android.material.textview.MaterialTextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClassifyDialogAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
@@ -26,12 +27,14 @@ public class ClassifyDialogAdapter extends BaseQuickAdapter<String, BaseViewHold
     @NonNull
     @Override
     protected BaseViewHolder onCreateDefViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LinearLayout layout=new LinearLayout(getContext());
         MaterialTextView textView=new MaterialTextView(getContext());
-        layout.addView(textView);
-        layout.setGravity(View.TEXT_ALIGNMENT_CENTER);
         textView.setId(R.id.mtv_search_classify);
-        return createBaseViewHolder(layout);
+        textView.setPadding(10,10,10,10);
+        textView.setTextSize(16);
+        textView.setMaxEms(5);
+        textView.setEllipsize(TextUtils.TruncateAt.END);
+        textView.setLines(1);
+        return createBaseViewHolder(textView);
     }
 
 
