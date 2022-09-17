@@ -82,12 +82,14 @@ public class TodoDialog extends BaseDialog {
     @Override
     protected void initListener() {
         ti_et_time.setOnClickListener(view -> {
-            picker.show(fragmentManager,picker.toString());
-            //监听日期选中后
-            picker.addOnPositiveButtonClickListener(selection -> {
-                select_time=selection;
-                ti_et_time.setText(DateUtils.longToDate(select_time));
-            });
+            if(!picker.isAdded()) {
+                picker.show(fragmentManager, picker.toString());
+                //监听日期选中后
+                picker.addOnPositiveButtonClickListener(selection -> {
+                    select_time = selection;
+                    ti_et_time.setText(DateUtils.longToDate(select_time));
+                });
+            }
         });
 
 

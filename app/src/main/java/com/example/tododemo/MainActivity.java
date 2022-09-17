@@ -71,14 +71,21 @@ public class MainActivity extends BaseActivity {
         adapter.addChildClickViewIds(R.id.cb_todo, R.id.cv_todo);
         adapter.setOnItemChildClickListener((adapter1, view, position) -> {
             //checkbox设置
-            if (view.getId() == R.id.cb_todo && SELECT_MOD == 0) {
-                CheckBox checkBox = findViewById(R.id.cb_todo);
-                ContentValues values = new ContentValues();
-                values.put("isDone", String.valueOf(checkBox.isChecked()));
-                TodoBean bean = beanList.get(position);
-                crud.UpdateTodo(values, bean.getId());
-                adapter.remove(bean);
-                values.clear();
+            if (view.getId() == R.id.cb_todo ) {
+                    CheckBox checkBox = findViewById(view.getId());
+                if(SELECT_MOD==0) {
+                    checkBox.setClickable(true);
+                    ContentValues values = new ContentValues();
+                    values.put("isDone", String.valueOf(checkBox.isChecked()));
+                    TodoBean bean = beanList.get(position);
+                    crud.UpdateTodo(values, bean.getId());
+                    adapter.remove(bean);
+                    values.clear();
+                }
+                else if(SELECT_MOD==1){
+                    checkBox.setChecked(Constant.TODO_STATE);
+                    checkBox.setClickable(false);
+                }
             }
             if (view.getId() == R.id.cv_todo) {
                 //点击进行编辑
