@@ -48,6 +48,7 @@
         app:layout_constraintTop_toBottomOf="@id/til_account"
         app:layout_constraintVertical_bias="0.1"
         app:startIconDrawable="@drawable/ic_baseline_keyboard_24">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -65,11 +66,13 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_login"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:backgroundTint="@color/main_color"
+        android:paddingVertical="8dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:text="@string/login"

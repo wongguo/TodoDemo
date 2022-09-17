@@ -20,9 +20,9 @@
         style="@style/TextInputEditRadius"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/input_account"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
+        android:hint="@string/input_account"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.35"
@@ -38,11 +38,11 @@
         style="@style/TextInputEditRadius"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="48dp"
         android:hint="@string/input_password"
         app:endIconMode="password_toggle"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/til_reg_account"
         app:startIconDrawable="@drawable/ic_baseline_keyboard_24">
 
@@ -52,17 +52,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_repassword"
         style="@style/TextInputEditRadius"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="48dp"
         android:hint="@string/input_rePassword"
         app:endIconMode="password_toggle"
-        android:layout_marginStart="48dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/til_reg_password"
         app:startIconDrawable="@drawable/ic_baseline_keyboard_24">
 
@@ -83,11 +82,13 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mb_register"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:backgroundTint="@color/main_color"
+        android:paddingVertical="8dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:text="@string/register"
@@ -99,7 +100,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_repassword"
         app:layout_constraintVertical_bias="0.2" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

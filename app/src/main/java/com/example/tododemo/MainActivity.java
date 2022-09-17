@@ -29,10 +29,11 @@ import com.example.tododemo.todo.TodoDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.radiobutton.MaterialRadioButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
@@ -41,8 +42,6 @@ public class MainActivity extends BaseActivity {
     private FloatingActionButton fab_add;
     private ExtendedFloatingActionButton efab_account;
     private MaterialTextView mtv_classify;
-    private MaterialRadioButton radio_plan;
-    private MaterialRadioButton radio_finish;
     private RecyclerView rv_todo;
     private List<TodoBean> beanList;
     private TodoAdapter adapter;
@@ -50,6 +49,7 @@ public class MainActivity extends BaseActivity {
     private FloatingActionButton fab_delete;
     private int SELECT_MOD = 0; // 选择模式 0为普通模式，1为多选删除模式
     private final List<String> delete_ids = new ArrayList<>(); // 存储多选删除的todo id
+    private TabLayout tl_todo;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity {
         beanList = crud.RetrieveTodo(Constant.username, Constant.TODO_STATE, classification);
         adapter = new TodoAdapter(beanList, MainActivity.this);
         rv_todo.setAdapter(adapter);
+
 
         adapter.addChildClickViewIds(R.id.cb_todo, R.id.cv_todo);
         adapter.setOnItemChildClickListener((adapter1, view, position) -> {
@@ -124,6 +125,7 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+
         // item的卡片布局，设置长按事件
         adapter.addChildLongClickViewIds(R.id.cv_todo);
         // 长按监听事件
@@ -138,11 +140,26 @@ public class MainActivity extends BaseActivity {
                     // 控件每一个item的点击事件
                     switch (item.getItemId()) {
                         case R.id.todo_delete:
-                            // 获取点击item的id，根据此id进行删除
-                            crud.DeleteTodo(beanList.get(position).getId());
-                            Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                            // 更新列表
-                            initRecyclerView(Constant.CLASSIFY);
+                            String title = "删除";
+                            String content = "请问是否删除该todo";
+                            NormalDialog dialog = new NormalDialog(this, Constant.MESSAGE_DIALOG, title, content);
+                            dialog.show();
+                            dialog.setItemOnClickListener(new NormalDialog.ItemOnClickListener() {
+                                @Override
+                                public void onPositiveClick() {
+                                    // 获取点击item的id，根据此id进行删除
+                                    crud.DeleteTodo(beanList.get(position).getId());
+                                    Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                    // 更新列表
+                                    initRecyclerView(Constant.CLASSIFY);
+                                    dialog.dismiss();
+                                }
+
+                                @Override
+                                public void onNegativeClick() {
+                                    dialog.dismiss();
+                                }
+                            });
                             break;
                         case R.id.todo_more:
                             // 显示多选删除的悬浮按钮
@@ -162,6 +179,7 @@ public class MainActivity extends BaseActivity {
             return true;
         });
 
+
     }
 
     @Override
@@ -179,8 +197,7 @@ public class MainActivity extends BaseActivity {
         fab_delete = findViewById(R.id.fab_delete);
         efab_account = findViewById(R.id.efab_account);
         mtv_classify = findViewById(R.id.mtv_classify);
-        radio_plan = findViewById(R.id.radio_plan);
-        radio_finish = findViewById(R.id.radio_finish);
+        tl_todo = findViewById(R.id.tl_todo);
         rv_todo = findViewById(R.id.rv_todo);
         crud = new CRUD(MainActivity.this, Constant.TODO_TABLE_NAME);
     }
@@ -201,7 +218,6 @@ public class MainActivity extends BaseActivity {
     /**
      * 控件点击事件
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initListener() {
         //用户登录界面跳转
@@ -234,7 +250,7 @@ public class MainActivity extends BaseActivity {
                 public void onPositiveClick() {
                     Intent intent = new Intent(MainActivity.this, ResultActivity.class);
                     intent.putExtra("search", dialog.getEditTextContent());
-                    intent.putExtra("userName",Constant.username);
+                    intent.putExtra("userName", Constant.username);
                     startActivity(intent);
                     dialog.dismiss();
                 }
@@ -285,24 +301,33 @@ public class MainActivity extends BaseActivity {
 
         // 删除选中todos
         fab_delete.setOnClickListener(view -> {
-            String title = "删除全部";
-            String content = "请问是否删除选中todo";
-            NormalDialog dialog = new NormalDialog(this, Constant.MESSAGE_DIALOG, title, content);
-            dialog.show();
-            dialog.setItemOnClickListener(new NormalDialog.ItemOnClickListener() {
-                @Override
-                public void onPositiveClick() {
-                    crud.DeleteTodos(delete_ids);
-                    initRecyclerView(Constant.CLASSIFY);
-                    Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                }
+            if(delete_ids.isEmpty()){
+                Toast.makeText(MainActivity.this, "选择为空", Toast.LENGTH_SHORT).show();
+            }else {
+                String title = "删除全部";
+                String content = "请问是否删除选中todo";
+                NormalDialog dialog = new NormalDialog(this, Constant.MESSAGE_DIALOG, title, content);
+                dialog.show();
+                dialog.setItemOnClickListener(new NormalDialog.ItemOnClickListener() {
+                    @Override
+                    public void onPositiveClick() {
+                        crud.DeleteTodos(delete_ids);
+                        initRecyclerView(Constant.CLASSIFY);
+                        Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        // 隐藏
+                        fab_delete.setVisibility(View.GONE);
+                        fab_add.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_baseline_add_24));
+                        SELECT_MOD = 0;
+                        initRecyclerView(Constant.CLASSIFY);
+                    }
 
-                @Override
-                public void onNegativeClick() {
-                    dialog.dismiss();
-                }
-            });
+                    @Override
+                    public void onNegativeClick() {
+                        dialog.dismiss();
+                    }
+                });
+            }
         });
 
         //分类查看
@@ -317,17 +342,34 @@ public class MainActivity extends BaseActivity {
             });
         });
 
-        // 计划todo页面切换
-        radio_plan.setOnClickListener(v -> {
-            Constant.TODO_STATE = false;
-            initRecyclerView(Constant.CLASSIFY);
-        });
+        //TabLayout切换todo列表
+        tl_todo.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position=tab.getPosition();
+                if(position==0){
+                    Constant.TODO_STATE = false;
+                    initRecyclerView(Constant.CLASSIFY);
+                }
+                else if(position==1){
+                    Constant.TODO_STATE = true;
+                    initRecyclerView(Constant.CLASSIFY);
+                }
+            }
 
-        // 已完成todo页面切换
-        radio_finish.setOnClickListener(v -> {
-            Constant.TODO_STATE = true;
-            initRecyclerView(Constant.CLASSIFY);
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
         });
+        tl_todo.addTab(tl_todo.newTab().setText(R.string.tab_todo));
+        tl_todo.addTab(tl_todo.newTab().setText(R.string.tab_done));
+
 
     }
 

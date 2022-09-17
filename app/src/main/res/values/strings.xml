@@ -14,8 +14,8 @@
 
     <!--todo界面-->
     <string name="toolbar">Todo</string>
-    <string name="radio_todo">未完成</string>
-    <string name="radio_done">已完成</string>
+    <string name="tab_todo">未完成</string>
+    <string name="tab_done">已完成</string>
 
     <!--分类-->
     <string name="classify_name">全部</string>

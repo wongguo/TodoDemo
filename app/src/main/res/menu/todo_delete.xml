@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/todo_delete"
-        android:title="@string/pop_delete"/>
+        android:title="@string/pop_delete" />
     <item
         android:id="@+id/todo_more"
         android:title="@string/pop_more"/>

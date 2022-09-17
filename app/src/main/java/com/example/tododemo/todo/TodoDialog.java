@@ -9,31 +9,25 @@ import com.example.tododemo.R;
 import com.example.tododemo.bean.TodoBean;
 import com.example.tododemo.dialog.BaseDialog;
 import com.example.tododemo.sqlite.DateUtils;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
-
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.google.android.material.textview.MaterialTextView;
 
 public class TodoDialog extends BaseDialog {
 
-    private final Context context;
     private final FragmentManager fragmentManager;
     private long select_time = 0L;
     private MaterialButton mb_add;
-    private MaterialToolbar mtb_add;
+    private MaterialTextView mtv_title_add;
     private TextInputEditText ti_et_title;
     private TextInputEditText ti_et_classify;
     private TextInputEditText ti_et_time;
     private MaterialDatePicker<Long> picker;
     private ButtonOnClickListener buttonOnClickListener;
 
-    public TodoDialog(@NonNull Context context, FragmentManager fragmentManager) {
+    public TodoDialog(@NonNull Context context, @NonNull FragmentManager fragmentManager) {
         super(context);
-        this.context=context;
         this.fragmentManager=fragmentManager;
     }
 
@@ -48,14 +42,14 @@ public class TodoDialog extends BaseDialog {
         ti_et_classify = findViewById(R.id.ti_et_classify);
         ti_et_time = findViewById(R.id.ti_et_time);
         mb_add = findViewById(R.id.mb_add);
-        mtb_add = findViewById(R.id.mtb_add);
+        mtv_title_add = findViewById(R.id.mtv_title_add);
         //初始化日期选择器
         initDatePicker();
     }
 
     // 编辑--获取该item的bean参数
     public void initSetDate(TodoBean bean){
-        mtb_add.setTitle("修改代办");
+        mtv_title_add.setText("修改代办");
         // 取值-设入
         ti_et_title.setText(bean.getTitle());
         // 设置焦点位置

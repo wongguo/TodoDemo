@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
@@ -34,6 +35,9 @@ public class ClassifyDialogAdapter extends BaseQuickAdapter<String, BaseViewHold
         textView.setMaxEms(5);
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setLines(1);
+        textView.setGravity(Gravity.CENTER);
+        textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
         return createBaseViewHolder(textView);
     }
 

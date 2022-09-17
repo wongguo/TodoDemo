@@ -13,23 +13,21 @@
         android:layout_height="wrap_content"
         android:background="@color/main_color"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_baseline_person_24"
         app:title="@string/toolbar"
         app:titleCentered="true"
         app:titleTextColor="@color/white" />
 
-
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/efab_account"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:backgroundTint="@color/main_color"
+        android:backgroundTint="#00FFFFFF"
         android:text="@string/public_account"
         android:textColor="@color/white"
         app:icon="@drawable/ic_baseline_person_24"
         app:iconTint="@color/white"
-        android:shadowColor="@color/main_color"
         app:layout_constraintBottom_toBottomOf="@+id/mtb_main"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -49,55 +47,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tl_todo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mtb_main">
+        app:layout_constraintTop_toBottomOf="@id/mtb_main"
+        app:tabUnboundedRipple="false">
 
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/radio_plan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/radio_todo"
-            android:layout_marginEnd="32dp"
-            android:buttonTint="@color/main_color"
-            android:textStyle="bold"
-            android:checked="true"/>
+    </com.google.android.material.tabs.TabLayout>
 
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/radio_finish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="@string/radio_done"
-            android:buttonTint="@color/main_color"/>
-
-    </RadioGroup>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtv_classify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxEms="4"
         android:minWidth="30dp"
         android:text="@string/classify_name"
         android:textSize="16sp"
-        android:lines="1"
-        android:maxEms="4"
-        android:ellipsize="end"
-        app:layout_constraintBottom_toBottomOf="@+id/radioGroup"
+        app:layout_constraintBottom_toBottomOf="@+id/tl_todo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/radioGroup"
+        app:layout_constraintStart_toEndOf="@+id/tl_todo"
         app:layout_constraintTop_toBottomOf="@+id/mtb_main" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_todo"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tl_todo" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -105,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="48dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/red"
         android:contentDescription="@string/delete"
@@ -121,11 +106,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="28dp"
-        app:backgroundTint="@color/main_color"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="48dp"
         android:contentDescription="@string/add"
         android:src="@drawable/ic_baseline_add_24"
+        app:backgroundTint="@color/main_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white" />
