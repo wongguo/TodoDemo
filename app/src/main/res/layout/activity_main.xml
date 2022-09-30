@@ -59,8 +59,6 @@
         app:tabUnboundedRipple="true">
 
     </com.google.android.material.tabs.TabLayout>
-
-
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtv_classify"
         android:layout_width="wrap_content"
