@@ -5,7 +5,7 @@
     android:id="@+id/cv_todo"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_margin="8dp"
     app:cardCornerRadius="5dp">
 
     <RelativeLayout
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/mb_todo_classify"
             android:layout_toEndOf="@id/cb_todo"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
             android:layout_below="@+id/mtv_todo_title"
             android:layout_toStartOf="@id/mb_todo_classify"
             android:layout_toEndOf="@id/cb_todo"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="5dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mb_todo_classify"

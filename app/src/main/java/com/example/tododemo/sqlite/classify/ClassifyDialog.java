@@ -1,7 +1,6 @@
-package com.example.tododemo.classify;
+package com.example.tododemo.sqlite.classify;
 
 import android.content.Context;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,7 +16,7 @@ import java.util.List;
 
 public class ClassifyDialog extends BaseDialog {
 
-    private Context context;
+    private final Context context;
     private RecyclerView rv_classify;
     private MaterialButton mb_cancel_classify;
     private MaterialButton mb_confirm_classify;

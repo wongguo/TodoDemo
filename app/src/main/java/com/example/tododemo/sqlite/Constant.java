@@ -12,10 +12,6 @@ public class Constant {
     public static int EDIT_DIALOG = 1;
     public static int MESSAGE_DIALOG = 0;
 
-    public static int TYPE_DAY = 0;
-    public static int TYPE_TODO = 1;
-
-
     // 0在数据库表示false 1表示true
     public static boolean TODO_STATE = false;
 

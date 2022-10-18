@@ -19,7 +19,7 @@ import com.example.tododemo.account.AccountActivity;
 import com.example.tododemo.account.UserDialog;
 import com.example.tododemo.bean.TodoBean;
 import com.example.tododemo.bean.UserBean;
-import com.example.tododemo.classify.ClassifyDialog;
+import com.example.tododemo.sqlite.classify.ClassifyDialog;
 import com.example.tododemo.dialog.NormalDialog;
 import com.example.tododemo.search.ResultActivity;
 import com.example.tododemo.sqlite.CRUD;
@@ -33,7 +33,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
@@ -72,11 +71,12 @@ public class MainActivity extends BaseActivity {
         adapter.setOnItemChildClickListener((adapter1, view, position) -> {
             //checkbox设置
             if (view.getId() == R.id.cb_todo ) {
-                    CheckBox checkBox = findViewById(view.getId());
+                CheckBox checkBox = findViewById(view.getId());
+                checkBox.setChecked(beanList.get(position).getIsDone());
                 if(SELECT_MOD==0) {
                     checkBox.setClickable(true);
                     ContentValues values = new ContentValues();
-                    values.put("isDone", String.valueOf(checkBox.isChecked()));
+                    values.put("isDone", String.valueOf(!checkBox.isChecked()));
                     TodoBean bean = beanList.get(position);
                     crud.UpdateTodo(values, bean.getId());
                     adapter.remove(bean);
@@ -145,40 +145,37 @@ public class MainActivity extends BaseActivity {
                 popupMenu.show();
                 popupMenu.setOnMenuItemClickListener(item -> {
                     // 控件每一个item的点击事件
-                    switch (item.getItemId()) {
-                        case R.id.todo_delete:
-                            String title = "删除";
-                            String content = "请问是否删除该todo";
-                            NormalDialog dialog = new NormalDialog(this, Constant.MESSAGE_DIALOG, title, content);
-                            dialog.show();
-                            dialog.setItemOnClickListener(new NormalDialog.ItemOnClickListener() {
-                                @Override
-                                public void onPositiveClick() {
-                                    // 获取点击item的id，根据此id进行删除
-                                    crud.DeleteTodo(beanList.get(position).getId());
-                                    Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                    // 更新列表
-                                    initRecyclerView(Constant.CLASSIFY);
-                                    dialog.dismiss();
-                                }
+                    if(item.getItemId()==R.id.todo_delete){
+                        String title = "删除";
+                        String content = "请问是否删除该todo";
+                        NormalDialog dialog = new NormalDialog(this, Constant.MESSAGE_DIALOG, title, content);
+                        dialog.show();
+                        dialog.setItemOnClickListener(new NormalDialog.ItemOnClickListener() {
+                            @Override
+                            public void onPositiveClick() {
+                                // 获取点击item的id，根据此id进行删除
+                                crud.DeleteTodo(beanList.get(position).getId());
+                                Toast.makeText(MainActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                // 更新列表
+                                initRecyclerView(Constant.CLASSIFY);
+                                dialog.dismiss();
+                            }
 
-                                @Override
-                                public void onNegativeClick() {
-                                    dialog.dismiss();
-                                }
-                            });
-                            break;
-                        case R.id.todo_more:
-                            // 显示多选删除的悬浮按钮
-                            fab_delete.setVisibility(View.VISIBLE);
-                            // 同时将添加todo按钮的图像加载成取消样式
-                            fab_add.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_baseline_close_24));
-                            // 变更为多选模式
-                            SELECT_MOD = 1;
-                            break;
-                        default:
-                            // 其他按钮进行异常报错
-                            throw new IllegalStateException("Unexpected value: " + item.getItemId());
+                            @Override
+                            public void onNegativeClick() {
+                                dialog.dismiss();
+                            }
+                        });
+                    }else if(item.getItemId()==R.id.todo_more){
+                        // 显示多选删除的悬浮按钮
+                        fab_delete.setVisibility(View.VISIBLE);
+                        // 同时将添加todo按钮的图像加载成取消样式
+                        fab_add.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_baseline_close_24));
+                        // 变更为多选模式
+                        SELECT_MOD = 1;
+                    }else {
+                        // 其他按钮进行异常报错
+                        throw new IllegalStateException("Unexpected value: " + item.getItemId());
                     }
                     return true;
                 });
@@ -208,7 +205,6 @@ public class MainActivity extends BaseActivity {
         rv_todo = findViewById(R.id.rv_todo);
         crud = new CRUD(MainActivity.this, Constant.TODO_TABLE_NAME);
     }
-
 
     //初始化数据库->自动登录
     protected void initSQL() {
@@ -376,7 +372,6 @@ public class MainActivity extends BaseActivity {
         });
         tl_todo.addTab(tl_todo.newTab().setText(R.string.tab_todo));
         tl_todo.addTab(tl_todo.newTab().setText(R.string.tab_done));
-
 
     }
 

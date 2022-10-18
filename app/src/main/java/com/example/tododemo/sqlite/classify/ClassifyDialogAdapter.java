@@ -1,4 +1,4 @@
-package com.example.tododemo.classify;
+package com.example.tododemo.sqlite.classify;
 
 import android.text.TextUtils;
 import android.view.Gravity;
